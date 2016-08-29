@@ -48,7 +48,7 @@
 \setbeamercolor*{itemize subsubitem}{fg=darkred}
 
 \newlength{\columnheight}
-\setlength{\columnheight}{96cm}
+\setlength{\columnheight}{98cm}
 \renewcommand{\thetable}{}
 \def\andname{,}
 \authornote{}
@@ -85,7 +85,7 @@ library(biogram)
 
 \begin{frame}
 \begin{columns}
-\begin{column}{.485\textwidth}
+\begin{column}{.50\textwidth}
 \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
 \begin{minipage}[T]{.95\textwidth}
 \parbox[t][\columnheight]{\textwidth}
@@ -117,53 +117,11 @@ contactivity.
 
   Based on that, we created 524,284 amino acid encodings with different level of 
 amino acid alphabet reduction from three to six amino acid groups using Ward's 
-clusterization ~\citep{joe_h._ward_jr_hierarchical_1963},  which was performed 
+clusterization, which was performed 
 on all combinations of the normalized values of physicochemical properties from 
 1 to 17.
 
     \end{block}
-
-\begin{block}{Quick Permutation Test (QuiPT)}
-    Model and statistic independent permutation tests can be used to filter features obtained through counting n-grams.
-    
-    During a permutation test class labels are randomly exchanged during computation of a significance statistic. p-values are defined as:
-    
-\begin{center}
-\scalebox{0.85}{
-$      
-\textnormal{p-value} = \frac{N_{T_P > T_R}}{N}
-$
-}
-\end{center}
-
-where $N_{T_P > T_R}$ is number of times when $T_P$ (permuted test statistic) was more extreme than $T_R$ (test statistic for non-permuted data).
-
-Permutation tests are computationally expensive (especially considering precise estimation of small p-values, because the number of permutations is inversely proportional to the interval between p-values).
-
-\medskip
-
-\textbf{Qui}ck \textbf{P}ermutation \textbf{T}est (QuiPT) thanks to the unique parameterization replaces a permutation test with the exact two-sided Fisher's test~\citep{lehmann1986testing} reducing the computation cost. 
-      
-    \end{block}
-    \vfill
-
-
-
-
-}
-\end{minipage}
-\end{beamercolorbox}
-\end{column}
-
-
-%new column ------------------------------------------------------    
-
-\begin{column}{.51\textwidth}
-\begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
-\begin{minipage}[T]{.95\textwidth}  
-\parbox[t][\columnheight]{\textwidth}
-{
-
 
 \begin{block}{Results of cross-validation}
 
@@ -193,23 +151,28 @@ the 0.25 and 0.75 quartiles. The bar inside the box represents the median. The
 gray circles correspond to the encodings with the AUC outside the 0.95 
 confidence interval.
 
-\normalsize	
-\bigskip
-The predictor based on the best-performing encoding reached the highest AUC (0.8667) 
-in classification of the shortest sequences (with the length of 6 residues).
-
-\bigskip
-
-Classifiers based on the full (i.e., unreduced) amino acid alphabet never predicted 
-amyloidogenicity better than the best classifier based on the reduced alphabet. 
-
-\bigskip
-
-The standard encodings found in the literature performed worse than other 
-analyzed encodings in most categories.
-
 \end{block}
 \vfill
+
+
+
+
+}
+\end{minipage}
+\end{beamercolorbox}
+\end{column}
+
+
+%new column ------------------------------------------------------    
+
+\begin{column}{.51\textwidth}
+\begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+\begin{minipage}[T]{.95\textwidth}  
+\parbox[t][\columnheight]{\textwidth}
+{
+
+
+
 
 
 \begin{block}{Informative n-grams}
@@ -276,6 +239,22 @@ The predictor based on the best-performing alphabet, called AmyloGram, was bench
 
 
 \begin{block}{Summary and funding}
+
+
+The predictor based on the best-performing encoding reached the highest AUC (0.8667) 
+in classification of the shortest sequences.
+
+\bigskip
+
+Classifiers based on the full (i.e., unreduced) amino acid alphabet never predicted 
+amyloidogenicity better than the best classifier based on the reduced alphabet. 
+
+\bigskip
+
+The standard encodings found in the literature performed worse than other 
+analyzed encodings in most categories.
+
+
 Thanks to the reduction of the amino acid alphabet and description of peptides by 
 short sub-sequences (n-grams), we were able to create the efficient predictor 
 of amyloidogenic sequences called AmyloGram.
