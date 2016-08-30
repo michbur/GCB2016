@@ -172,6 +172,35 @@ confidence interval.
 {
 
 
+\begin{block}{Similarity index}
+<<echo = FALSE,message=FALSE,fig.align='center',fig.width=14,fig.height=5,warning=FALSE>>=
+si_dat <- read.csv2("si_dat.csv")
+
+levels(si_dat[["et"]]) <- c("Best-performing encoding", 
+                            "Encoding", "Full alphabet", 
+                            "Standard encoding", 
+                            "Standard encoding")
+
+ggplot(si_dat, aes(x=si, y=AUC_mean, color=et, shape = et)) + 
+  geom_point(size = 4) +
+  scale_color_manual("", values = c("red", "grey", "blue", "green")) +
+  scale_shape_manual("", values = c(16, 1, 15, 15), drop = FALSE) +
+  xlab("Similarity index") +
+  ylab("AUC") +
+  my_theme +
+  geom_point(data = filter(si_dat, et != "Encoding"), 
+             aes(x = si, y = AUC_mean, color = et), size = 4) +
+  guides(color = guide_legend(nrow = 2), shape = guide_legend(nrow = 1)) +
+  scale_shape_manual("", values = c(16, 1, 15, 15), drop = FALSE) +
+  scale_color_manual("", values = c("red", "grey", "green", "blue"), drop = FALSE) +
+  theme(panel.grid.major = element_line(color = "lightgrey", size = 0.5)) 
+
+@
+ words, words, words
+
+\end{block}
+\vfill
+
 
 
 
