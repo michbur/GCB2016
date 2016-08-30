@@ -181,18 +181,20 @@ levels(si_dat[["et"]]) <- c("Best-performing encoding",
                             "Standard encoding", 
                             "Standard encoding")
 
-ggplot(si_dat, aes(x=si, y=AUC_mean, color=et, shape = et)) + 
-  geom_point(size = 4) +
-  scale_color_manual("", values = c("red", "grey", "blue", "green")) +
-  scale_shape_manual("", values = c(16, 1, 15, 15), drop = FALSE) +
+ggplot(si_dat, aes(x=si, y=AUC_mean)) + 
+  #geom_point(size = 4) +
+  geom_density_2d(color = "black", contour = TRUE) +
+  stat_density2d(aes(fill=..level..), color = "black", 
+                 contour = TRUE, geom="polygon") +
+  scale_fill_continuous("Density", low = "#ffd4d4", high = "#8b0000") +
   xlab("Similarity index") +
   ylab("AUC") +
   my_theme +
-  geom_point(data = filter(si_dat, et != "Encoding"), 
-             aes(x = si, y = AUC_mean, color = et), size = 4) +
+  geom_point(si_dat, # data = filter(si_dat, et != "Encoding"),
+             aes(x = si, y = AUC_mean, color = et, shape = et), size = 4) +
   guides(color = guide_legend(nrow = 2), shape = guide_legend(nrow = 1)) +
-  scale_shape_manual("", values = c(16, 1, 15, 15), drop = FALSE) +
-  scale_color_manual("", values = c("red", "grey", "green", "blue"), drop = FALSE) +
+  scale_shape_manual("", values = c(16, 16, 1, 15, 15), drop = FALSE) +
+  scale_color_manual("", values = c("grey", "red", "grey", "green", "blue"), drop = FALSE) +
   theme(panel.grid.major = element_line(color = "lightgrey", size = 0.5)) 
 
 @
