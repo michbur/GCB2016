@@ -259,7 +259,11 @@ Thanks to the reduction of the amino acid alphabet and description of peptides b
 short sub-sequences (n-grams), we were able to create the efficient predictor 
 of amyloidogenic sequences called AmyloGram.
 
-\bigskip
+\end{block}
+\vfill
+
+
+\begin{block}{Availability and funding}
 
 Our software is avaible as a web-server: \url{smorfland.uni.wroc.pl/amylogram}.
 
