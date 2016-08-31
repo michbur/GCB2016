@@ -181,26 +181,28 @@ levels(si_dat[["et"]]) <- c("Best-performing encoding",
                             "Standard encoding", 
                             "Standard encoding")
 
+
 ggplot(si_dat, aes(x=si, y=AUC_mean)) + 
-  #geom_point(size = 4) +
-  geom_density_2d(color = "black", contour = TRUE) +
-  stat_density2d(aes(fill=..level..), color = "black", 
-                 contour = TRUE, geom="polygon") +
-  scale_fill_continuous("Density", low = "#ffd4d4", high = "#8b0000") +
+  # geom_point(data = si_dat, 
+  #            aes(x = si, y = AUC_mean, color = et, shape = et), size = 4) +
+  #geom_density_2d(color = "black", contour = TRUE) +
+    geom_bin2d(bins = 30) +
+  # stat_density2d(aes(fill=..level..), color = "black",
+  #                contour = TRUE, geom = "polygon", alpha = 0.5, binwidth = 50, bins = 10) +
+  scale_fill_continuous("Count", low = "#d4d4d4", high = "#5c5c5c") +
   xlab("Similarity index") +
   ylab("AUC") +
   my_theme +
-  geom_point(data = si_dat, 
-             aes(x = si, y = AUC_mean, color = et, shape = et), size = 4, alpha = 0.5) +
-  # geom_point(data = filter(si_dat, et != "Encoding"), 
-  #            aes(x = si, y = AUC_mean, color = et, shape = et), size = 4) +
-  # guides(color = guide_legend(nrow = 2), shape = guide_legend(nrow = 1)) +
-  # scale_shape_manual("", values = c(16, 1, 15, 15), drop = FALSE) +
-  # scale_color_manual("", values = c("red", "grey", "green", "blue"), drop = FALSE) +
+  geom_point(data = droplevels(filter(si_dat, et != "Encoding")),
+             aes(x = si, y = AUC_mean, color = et, shape = et), size = 4) +
+  guides(color = guide_legend(nrow = 1), shape = guide_legend(nrow = 1), 
+         fill = guide_colorbar(barwidth = unit(50, "line"))) +
+  scale_shape_manual("", values = c(16, 15, 15), drop = FALSE) +
+  scale_color_manual("", values = c("red", "green", "blue"), drop = FALSE) +
   theme(panel.grid.major = element_line(color = "lightgrey", size = 0.5)) 
 
 @
- words, words, words
+Similarity index~\citep{stephenson_unearthing_2013} measures the similarity between two encodings (1 - identical, 0, totally dissimilar). The more similar is given encoding to the best-performing encoding, the higher AUC has classifier that employs it. Such relationship indicates that the best-performing encoding was not found by chance, but represents properties required for the proper prediction of amyloids. 
 
 \end{block}
 \vfill

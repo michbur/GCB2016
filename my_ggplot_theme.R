@@ -11,7 +11,7 @@ my_theme <- theme(
   axis.title.y = element_text(size=14 + size_mod, vjust = 1),
   
   legend.background = element_rect(fill = "NA"),
-  legend.key = element_rect(fill = "NA", color = "NA", size = 0.5),
+  legend.key = element_rect(fill = "white", color = "NA", size = 0.5),
   legend.position = "bottom",
   #uncomment for publications
   #legend.key.size = unit(0.1, "inches"),
