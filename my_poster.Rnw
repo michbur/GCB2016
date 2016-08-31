@@ -48,7 +48,7 @@
 \setbeamercolor*{itemize subsubitem}{fg=darkred}
 
 \newlength{\columnheight}
-\setlength{\columnheight}{98cm}
+\setlength{\columnheight}{98.5cm}
 \renewcommand{\thetable}{}
 \def\andname{,}
 \authornote{}
@@ -92,7 +92,11 @@ library(biogram)
 {
 \begin{block}{Introduction}
 
-Amyloids are proteins associated with the number of clinical disorders (e.g., Alzheimer's, Creutzfeldt-Jakob's and Huntington's diseases). Despite their diversity, all amyloid proteins can undergo aggregation initiated by 6- to \mbox{15-residue} segments called hot spots. To find the patterns defining the hot-spots, we trained predictors of amyloidogenicity based on random forests using short subsequences (n-grams) extracted from amyloidogenic and non-amyloidogenic peptides collected in the AmyLoad database.
+Amyloids are proteins associated with the number of clinical disorders (e.g., Alzheimer's, Creutzfeldt-Jakob's and Huntington's diseases). Despite their diversity, all amyloid proteins can undergo aggregation initiated by 6- to \mbox{15-residue} segments called hot spots. To find the patterns defining the hot-spots, we trained multiple predictors of amyloidogenicity based on random forests using short subsequences (n-grams) extracted from amyloidogenic and non-amyloidogenic peptides collected in the AmyLoad database. 
+
+\bigskip
+
+The best-performing predictor, AmyloGram, was compared to state-of-art predictors of amyloids using the independent benchmark dataset. 
 
     \end{block}
 
@@ -108,18 +112,11 @@ Amyloids are proteins associated with the number of clinical disorders (e.g., Al
 
 The amyloidogenicity of a given peptide may not depend on the exact sequence of 
 amino acids but on its more general properties. We 
-handpicked 17 measures from AAIndex data base 
+handpicked 17 measures from AAIndex database 
 describing features important in the amyloidogenicity, such as: size of 
 residues, hydrophobicity, solvent surface area, frequency in $\beta$-sheets and 
-contactivity. 
-
-\bigskip
-
-  Based on that, we created 524,284 amino acid encodings with different level of 
-amino acid alphabet reduction from three to six amino acid groups using Ward's 
-clusterization, which was performed 
-on all combinations of the normalized values of physicochemical properties from 
-1 to 17.
+contactivity. Based on that we created 524,284 amino acid encodings with different level of 
+amino acid alphabet reduction from three to six amino acid groups.
 
     \end{block}
 
@@ -129,12 +126,16 @@ Distribution of mean AUC values of classifiers with various encodings
 for every possible combination of training and testing data set including 
 different lengths of sequences. 
 
-<<echo = FALSE,message=FALSE,fig.align='center',fig.width=14,fig.height=6,warning=FALSE>>=
+<<echo = FALSE,message=FALSE,fig.align='center',fig.width=14,fig.height=5.8,warning=FALSE>>=
 amyloids_plot <- read.csv("amyloid_plot_data.csv")
+
+levels(amyloids_plot[["et"]]) <- c("Best-performing reduced alphabet", 
+                                   "Reduced alphabet", "Full alphabet", 
+                                   "Standard reduced alphabet")
 
 ggplot(amyloids_plot, aes(x = len_range, y = AUC_mean)) +
   geom_boxplot(outlier.color = "grey", outlier.shape = 1) +
-  geom_point(data = filter(amyloids_plot, et != "Encoding"), 
+  geom_point(data = filter(amyloids_plot, et != "Reduced alphabet"), 
              aes(x = len_range, y = AUC_mean, color = et, shape = et), size = 4) +
   scale_x_discrete("") +
   scale_y_continuous("Mean AUC") +
@@ -173,13 +174,13 @@ confidence interval.
 
 
 \begin{block}{Similarity index}
-<<echo = FALSE,message=FALSE,fig.align='center',fig.width=14,fig.height=5,warning=FALSE>>=
+<<echo = FALSE,message=FALSE,fig.align='center',fig.width=14,fig.height=6.3,warning=FALSE>>=
 si_dat <- read.csv2("si_dat.csv")
 
-levels(si_dat[["et"]]) <- c("Best-performing encoding", 
-                            "Encoding", "Full alphabet", 
-                            "Standard encoding", 
-                            "Standard encoding")
+levels(si_dat[["et"]]) <- c("Best-performing reduced alphabet", 
+                            "Reduced alphabet", "Full alphabet", 
+                            "Standard reduced alphabet", 
+                            "Standard reduced alphabet")
 
 
 ggplot(si_dat, aes(x=si, y=AUC_mean)) + 
@@ -193,7 +194,7 @@ ggplot(si_dat, aes(x=si, y=AUC_mean)) +
   xlab("Similarity index") +
   ylab("AUC") +
   my_theme +
-  geom_point(data = droplevels(filter(si_dat, et != "Encoding")),
+  geom_point(data = droplevels(filter(si_dat, et != "Reduced alphabet")),
              aes(x = si, y = AUC_mean, color = et, shape = et), size = 4) +
   guides(color = guide_legend(nrow = 1), shape = guide_legend(nrow = 1), 
          fill = guide_colorbar(barwidth = unit(50, "line"))) +
@@ -273,26 +274,19 @@ The predictor based on the best-performing alphabet, called AmyloGram, was bench
 
 
 
-\begin{block}{Summary and funding}
+\begin{block}{Summary}
 
-
-The predictor based on the best-performing encoding reached the highest AUC (0.8667) 
-in classification of the shortest sequences.
+We identified a group of reduced amino acid alphabets which capture properties of amyloids. 
 
 \bigskip
 
 Classifiers based on the full (i.e., unreduced) amino acid alphabet never predicted 
-amyloidogenicity better than the best classifier based on the reduced alphabet. 
+amyloidogenicity better than the best classifier based on the reduced alphabet.
 
 \bigskip
 
-The standard encodings found in the literature performed worse than other 
-analyzed encodings in most categories.
+Our algorithm was also capable of extracting n-gram associated with amyloidogenicity, partially confirming experimental results.
 
-
-Thanks to the reduction of the amino acid alphabet and description of peptides by 
-short sub-sequences (n-grams), we were able to create the efficient predictor 
-of amyloidogenic sequences called AmyloGram.
 
 \end{block}
 \vfill
@@ -300,7 +294,7 @@ of amyloidogenic sequences called AmyloGram.
 
 \begin{block}{Availability and funding}
 
-Our software is avaible as a web-server: \url{smorfland.uni.wroc.pl/amylogram}.
+Our software is available as a web-server: \url{smorfland.uni.wroc.pl/amylogram}.
 
 \bigskip
 
