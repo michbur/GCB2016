@@ -1,13 +1,154 @@
 \documentclass{beamer}
 \usetheme{metropolis}           % Use metropolis theme
-\title{A minimal example}
-\date{\today}
-\author{Matthias Vogelgesang}
-\institute{Centre for Modern Beamer Themes}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{array,booktabs,tabularx}
+\usepackage{epstopdf}
+\usepackage{colortbl, xcolor}
+
+
+\title{AmyloGram:a novel predictor of amyloidogenicity}
+\date{}
+\author{Micha\l{} Burdukiewicz\inst{1}, Piotr Sobczyk\inst{2}, Stefan R\"{o}diger\inst{3}, Pawe\l{} Mackiewicz\inst{1} and Ma\l{}gorzata Kotulska\inst{4}}
+\institute{\small{\textsuperscript{1}University of Wroc\l{}aw, Department of Genomics, 
+
+\textsuperscript{2}Wroc\l{}aw University of Science and Technology, Faculty of Pure and Applied Mathematics,
+
+\textsuperscript{3}Brandenburg University of Technology Cottbus-Senftenberg, Institute of Biotechnology, 
+
+\textsuperscript{4}Wroc\l{}aw University of Science and Technology, Department of Biomedical Engineering}}
+
 \begin{document}
   \maketitle
   \section{First Section}
-  \begin{frame}{First Frame}
+  
+  \begin{frame}{}
+  <<knitrIntro, echo = FALSE, message=FALSE,warning=FALSE>>=
+source("my_ggplot_theme.R")
+
+library(dplyr)
+library(reshape2)
+library(xtable)
+library(biogram)
+
+
+@
+  
+  
     Hello, world!
   \end{frame}
+  
+  
+    \begin{frame}{}
+\begin{figure} 
+\includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
+\end{figure}
+
+  \end{frame}
+  
+      \begin{frame}{}
+\begin{figure} 
+\includegraphics[width=0.55\textwidth]{static_figure/scheme1.eps}
+\end{figure}
+
+  \end{frame}
+  
+  
+      \begin{frame}{}
+\begin{figure} 
+\includegraphics[width=0.75\textwidth]{static_figure/scheme2.eps}
+\end{figure}
+
+  \end{frame}
+  
+      \begin{frame}{}
+\begin{figure} 
+\includegraphics[width=0.65\textwidth]{static_figure/scheme3.eps}
+\end{figure}
+
+  \end{frame}
+
+  
+    \begin{frame}{}
+  <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+amyloids_plot <- read.csv("amyloid_plot_data.csv")
+
+levels(amyloids_plot[["et"]]) <- c("Best-performing reduced alphabet", 
+                                   "Reduced alphabet", "Full alphabet", 
+                                   "Standard reduced alphabet")
+
+
+amyloids_plot[["len_range"]] <- factor(amyloids_plot[["len_range"]], 
+                                       levels = c("Test peptide length: 6 ", "Test peptide length: 7-10", 
+                                                  "Test peptide length: 11-15", "Test peptide length: 16-25"))
+
+subdat <- filter(amyloids_plot, pos == "Training peptide length: 6")
+
+ggplot(subdat, aes(x = len_range, y = AUC_mean)) +
+  geom_boxplot(outlier.color = "grey", outlier.shape = 16, outlier.size = 5) +
+  geom_point(data = filter(subdat, et != "Reduced alphabet"), 
+             aes(x = len_range, y = AUC_mean, color = et, shape = et), size = 5) +
+  scale_x_discrete("") +
+  scale_y_continuous("Mean AUC") +
+  scale_shape_manual("", values = c(16, 16, 15, 15), drop = FALSE) +
+  scale_color_manual("", values = c("red", "grey", "green", "blue"), drop = FALSE) +
+  guides(color = guide_legend(nrow = 2), shape = guide_legend(nrow = 2)) + 
+  #facet_wrap(~ pos, nrow = 3) +
+  ggtitle("Training peptide length: 6") + 
+  my_theme + 
+  coord_flip()
+
+
+@
+  
+  
+  \end{frame}
+  
+    \begin{frame}{}
+  <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+subdat <- filter(amyloids_plot, pos == "Training peptide length: 6-10")
+
+ggplot(subdat, aes(x = len_range, y = AUC_mean)) +
+  geom_boxplot(outlier.color = "grey", outlier.shape = 16, outlier.size = 5) +
+  geom_point(data = filter(subdat, et != "Reduced alphabet"), 
+             aes(x = len_range, y = AUC_mean, color = et, shape = et), size = 5) +
+  scale_x_discrete("") +
+  scale_y_continuous("Mean AUC") +
+  scale_shape_manual("", values = c(16, 16, 15, 15), drop = FALSE) +
+  scale_color_manual("", values = c("red", "grey", "green", "blue"), drop = FALSE) +
+  guides(color = guide_legend(nrow = 2), shape = guide_legend(nrow = 2)) + 
+  #facet_wrap(~ pos, nrow = 3) +
+  ggtitle("Training peptide length: 6-10") + 
+  my_theme + 
+  coord_flip()
+
+
+@
+  \end{frame}
+  
+    \begin{frame}{}
+  <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+subdat <- filter(amyloids_plot, pos == "Training peptide length: 6-15")
+
+ggplot(subdat, aes(x = len_range, y = AUC_mean)) +
+  geom_boxplot(outlier.color = "grey", outlier.shape = 16, outlier.size = 5) +
+  geom_point(data = filter(subdat, et != "Reduced alphabet"), 
+             aes(x = len_range, y = AUC_mean, color = et, shape = et), size = 5) +
+  scale_x_discrete("") +
+  scale_y_continuous("Mean AUC") +
+  scale_shape_manual("", values = c(16, 16, 15, 15), drop = FALSE) +
+  scale_color_manual("", values = c("red", "grey", "green", "blue"), drop = FALSE) +
+  guides(color = guide_legend(nrow = 2), shape = guide_legend(nrow = 2)) + 
+  #facet_wrap(~ pos, nrow = 3) +
+  ggtitle("Training peptide length: 6-15") + 
+  my_theme + 
+  coord_flip()
+
+
+@
+  \end{frame}  
+
 \end{document}
