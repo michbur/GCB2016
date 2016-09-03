@@ -59,6 +59,10 @@ Amyloid aggregates (red) around neurons (green). Strittmatter Laboratory, Yale U
   
   \begin{frame}{Aim}
   Analize structure of hot spots and create a novel predictor of amyloids.
+  \begin{itemize}
+  \item Does amyloidogenicity depend on the exact sequence of amino acids?
+  \item Which motifs are associated with amyloidogenicity?
+  \end{itemize}
   \end{frame}
   
   
@@ -95,7 +99,7 @@ Amyloid aggregates (red) around neurons (green). Strittmatter Laboratory, Yale U
     \item hydrophobicity, 
     \item solvent surface area, 
     \item frequency in $\beta$-sheets,
-    \item contactivity
+    \item contactivity.
   \end{itemize}
   \item 524 284 amino acid reduced alphabets with different level of amino acid alphabet reduction (three to six amino acid groups).
   \end{itemize}
@@ -224,6 +228,11 @@ confidence interval.
 %' @
 %'   \end{frame}  
 
+
+\begin{frame}{}
+Is the best-performing reduced amino alphabet associated with amyloidogenicity?
+\end{frame}
+
 \begin{frame}{Similarity index}
 <<echo = FALSE,message=FALSE,fig.align='center',fig.width=14,fig.height=6.3,warning=FALSE>>=
 si_dat <- read.csv2("si_dat.csv")
@@ -257,6 +266,10 @@ ggplot(si_dat, aes(x=si, y=AUC_mean)) +
 Similarity index~\citep{stephenson_unearthing_2013} measures the similarity between two reduced alphabets (1 - identical, 0, totally dissimilar).
 \end{frame}
 
+\begin{frame}{}
+Are informative n-grams found by QuiPT associated with amyloidogenicity?
+\end{frame}
+
 
 \begin{frame}{Informative n-grams}
 <<echo = FALSE,message=FALSE,fig.align='center',fig.width=14,fig.height=6,warning=FALSE>>=
@@ -284,10 +297,13 @@ ggplot(ngram_freq_plot, aes(x = decoded_name, y = value)) +
 
 @
 
-Dots and triangles 
-denote n-grams occurring in motifs found in respectively amyloidogenic and 
-non-amyloidogenic sequences~\citep{paz_sequence_2004}.
+Out of 65 the most informative n-grams, 15 (23\%) were also found in the motifs validated experimentally~\citep{paz_sequence_2004}.
 \end{frame}
+
+\begin{frame}{}
+Is performance of the AmyloGram, the classifier based on the best-performing reduced amino acid alphabet, also adequate on the independent dataset?
+\end{frame}
+
 
 \begin{frame}{Benchmark results}
 
@@ -311,6 +327,10 @@ The predictor based on the best-performing alphabet, called AmyloGram, was bench
 \end{frame}
 
 \begin{frame}{Summary}
+
+We identified a group of reduced amino acid alphabets which capture properties of amyloids. 
+
+Our algorithm was also capable of extracting n-gram associated with amyloidogenicity, partially confirming experimental results.
 
 Our software is available as a web-server: \url{smorfland.uni.wroc.pl/amylogram}.
 
