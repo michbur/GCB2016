@@ -1,0 +1,4 @@
+\beamer@endinputifotherversion {3.24pt}
+\beamer@sectionintoc {1}{Amyloids}{2}{0}{1}
+\beamer@sectionintoc {2}{Learning framework}{6}{0}{2}
+\beamer@sectionintoc {3}{Results}{16}{0}{3}
