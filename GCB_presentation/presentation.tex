@@ -48,7 +48,7 @@
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
 \usepackage{alltt}
-\usetheme{metropolis}           % Use metropolis theme
+\usetheme{metropolis}
 \usepackage[utf8]{inputenc}
 \usepackage{amsfonts}
 \usepackage{amsmath}
@@ -97,119 +97,21 @@ Amyloid aggregates (red) around neurons (green). Strittmatter Laboratory, Yale U
 \citet{sawaya_atomic_2007}
 \end{frame}
   
-  \begin{frame}{Aim}
-  Analize structure of hot spots and create a novel predictor of amyloids.
-  \begin{itemize}
-  \item Which motifs are associated with amyloidogenicity?
-  \item Does amyloidogenicity depend on the exact sequence of amino acids?
-  \end{itemize}
+  \begin{frame}
+  Which motifs are associated with amyloidogenicity?
+  Does amyloidogenicity depend on the exact sequence of amino acids?
   \end{frame}
 
-    \begin{frame}{}
+\section{Amyloidogenic motifs}
+
+    \begin{frame}
 \begin{figure} 
 \includegraphics[width=0.95\textwidth]{static_figure/ngram1.eps}
 \end{figure}
   \end{frame}
   
-    \begin{frame}{}
-\begin{figure} 
-\includegraphics[width=0.95\textwidth]{static_figure/ngram2.eps}
-\end{figure}
-  \end{frame}
 
-  
-% \section{Amyloidogenic motifs}  
-%   
-%     \begin{frame}{}
-% \begin{figure} 
-% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-% \end{figure}
-% 
-% 1. Extraction of overlapping hexamers from peptides with known amyloidicity status. 
-%   \end{frame}
-% 
-%     \begin{frame}{}
-% \begin{figure} 
-% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-% \end{figure}
-% 
-% 2. Clusterization of amino acids (AA) into groups (ID) using a combination of various 
-% physicochemical properties (P1, P2, ...).   
-% \end{frame}
-% 
-%     \begin{frame}{}
-% \begin{figure} 
-% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-% \end{figure}
-% 
-% 3. Encoding amino acids of hexamers into corresponding groups (reduced alphabet). 
-% \end{frame}
-% 
-%     \begin{frame}{}
-% \begin{figure} 
-% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-% \end{figure}
-% 
-% 4. Extraction of encoded n-grams of different types.
-% \end{frame}
-% 
-%   \begin{frame}{}
-% \begin{figure} 
-% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-% \end{figure}
-% 
-% 5. Selection of informative n-grams using Quick Permutation Test (QuiPT).
-% \end{frame}
-% 
-%   \begin{frame}{}
-% \begin{figure} 
-% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-% \end{figure}
-% 
-% 6. Cross-validation of encodings using random forest classifier, which is trained on the informative n-grams.
-% \end{frame}
-
-
-%       \begin{frame}{}
-% \begin{figure} 
-% \includegraphics[width=0.55\textwidth]{static_figure/scheme1.eps}
-% \end{figure}
-% 
-%   \end{frame}
-  
-  
-%       \begin{frame}{Reduced amino acid alphabets}
-% \begin{figure} 
-% \includegraphics[width=0.75\textwidth]{static_figure/scheme2.eps}
-% \end{figure}
-% 
-%   \end{frame}
-  
-  \begin{frame}{Reduced amino acid alphabets}
-
-\begin{itemize}
-\item 17 measures handpicked from AAIndex database 
-  \begin{itemize}
-    \item size of residues, 
-    \item hydrophobicity, 
-    \item solvent surface area, 
-    \item frequency in $\beta$-sheets,
-    \item contactivity.
-  \end{itemize}
-  \item 524 284 amino acid reduced alphabets with different level of amino acid alphabet reduction (three to six amino acid groups).
-  \end{itemize}
-
-    \end{frame}
-  
-  
-%   \begin{frame}{Filtering n-grams}
-% \begin{figure} 
-% \includegraphics[width=0.65\textwidth]{static_figure/scheme3.eps}
-% \end{figure}
-% 
-%   \end{frame}
-  
-  \begin{frame}{Quick Permutation Test}
+\begin{frame}{Quick Permutation Test}
   Informative n-grams are usually selected using permutation tests.
 
 During a permutation test we shuffle randomly class labels and compute a defined statistic (e.g. information gain). Values of statistic for permuted data are compared with the value of statistic for original data.
@@ -229,10 +131,9 @@ $N$: number of permutations.
 QuiPT is avaible as part of the \textbf{biogram} R package.
 \end{frame}
   
-      
-\section{Results}
-  
-    \begin{frame}{Cross-validation}
+
+
+\begin{frame}{Cross-validation}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
@@ -243,16 +144,25 @@ QuiPT is avaible as part of the \textbf{biogram} R package.
 
 
 \end{knitrout}
-  
-  \tiny
-Hinges of boxes correspond to 
-the 0.25 and 0.75 quartiles. The bar inside the box represents the median. The 
-gray circles correspond to the reduced alphabets with the AUC outside the 0.95 
-confidence interval.
+\end{frame}
 
+\section{Reduced amino acid alphabets}
   
+\begin{frame}
+  Does amyloidogenicity depend on the exact sequence of amino acids?
   \end{frame}
   
+    \begin{frame}{Reduced amino acid alphabets}
+\begin{figure} 
+\includegraphics[width=0.95\textwidth]{static_figure/ngram2.eps}
+\end{figure}
+  \end{frame}
+
+\begin{frame}{Standard reduced amino acid alphabets}
+To date, several reduced amino acid alphabets have been proposed, which have been applied to (among others) protein folding and protein structure prediction~\citep{kosiol_new_2004, melo_accuracy_2006}.
+  \end{frame}
+
+
     \begin{frame}{Cross-validation}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
@@ -264,13 +174,97 @@ confidence interval.
 
 
 \end{knitrout}
+  
+  \end{frame}
+
+
+\begin{frame}{Novel reduced amino acid alphabets}
+
+\begin{itemize}
+\item 17 measures handpicked from AAIndex database: 
+  \begin{itemize}
+    \item size of residues, 
+    \item hydrophobicity, 
+    \item solvent surface area, 
+    \item frequency in $\beta$-sheets,
+    \item contactivity.
+  \end{itemize}
+  \item 524 284 amino acid reduced alphabets with different level of amino acid alphabet reduction (three to six amino acid groups).
+  \end{itemize}
+
+    \end{frame}
+  
+
+\begin{frame}{Cross-validation}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+
+}
+
+
+
+\end{knitrout}
   \tiny
 Hinges of boxes correspond to 
 the 0.25 and 0.75 quartiles. The bar inside the box represents the median. The 
 gray circles correspond to the reduced alphabets with the AUC outside the 0.95 
 confidence interval.
 
+  
   \end{frame}
+
+  
+    \begin{frame}{Cross-validation}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+
+}
+
+
+
+\end{knitrout}
+  
+  \tiny
+Hinges of boxes correspond to 
+the 0.25 and 0.75 quartiles. The bar inside the box represents the median. The 
+gray circles correspond to the reduced alphabets with the AUC outside the 0.95 
+confidence interval.
+
+  
+  \end{frame}
+  
+%'     \begin{frame}{Cross-validation}
+%'   <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+%' subdat <- filter(amyloids_plot, pos == "Training peptide length: 6-10")
+%' 
+%' ggplot(subdat, aes(x = len_range, y = AUC_mean)) +
+%'   geom_boxplot(outlier.color = "grey", outlier.shape = 16, outlier.size = 5) +
+%'   geom_point(data = filter(subdat, et != "Reduced alphabet"), 
+%'              aes(x = len_range, y = AUC_mean, color = et, shape = et), size = 5) +
+%'   scale_x_discrete("") +
+%'   scale_y_continuous("Mean AUC") +
+%'   scale_shape_manual("", values = c(16, 16, 15, 15), drop = FALSE) +
+%'   scale_color_manual("", values = c("red", "grey", "green", "blue"), drop = FALSE) +
+%'   guides(color = guide_legend(nrow = 2), shape = guide_legend(nrow = 2)) + 
+%'   #facet_wrap(~ pos, nrow = 3) +
+%'   ggtitle("Training peptide length: 6-10") + 
+%'   my_theme + 
+%'   coord_flip() +
+%'   theme(plot.title = element_text(color = "red"))
+%' 
+%' 
+%' @
+%'   \tiny
+%' Hinges of boxes correspond to 
+%' the 0.25 and 0.75 quartiles. The bar inside the box represents the median. The 
+%' gray circles correspond to the reduced alphabets with the AUC outside the 0.95 
+%' confidence interval.
+%' 
+%'   \end{frame}
 
 %'     \begin{frame}{}
 %'   <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
@@ -295,7 +289,7 @@ confidence interval.
 %'   \end{frame}  
 
 
-\begin{frame}{}
+\begin{frame}{Alphabet similarity and performance}
 Is the best-performing reduced amino alphabet associated with amyloidogenicity?
 \end{frame}
 
@@ -303,7 +297,7 @@ Is the best-performing reduced amino alphabet associated with amyloidogenicity?
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
-{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 
 }
 
@@ -312,6 +306,8 @@ Is the best-performing reduced amino alphabet associated with amyloidogenicity?
 \end{knitrout}
 Similarity index~\citep{stephenson_unearthing_2013} measures the similarity between two reduced alphabets (1 - identical, 0, totally dissimilar).
 \end{frame}
+
+\section{Knowledge-discovery}
 
 \begin{frame}{}
 Are informative n-grams found by QuiPT associated with amyloidogenicity?
@@ -322,7 +318,7 @@ Are informative n-grams found by QuiPT associated with amyloidogenicity?
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
-{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
 
 }
 
@@ -333,7 +329,13 @@ Are informative n-grams found by QuiPT associated with amyloidogenicity?
 Out of 65 the most informative n-grams, 15 (23\%) were also found in the motifs validated experimentally~\citep{paz_sequence_2004}.
 \end{frame}
 
-\begin{frame}{}
+\begin{frame}
+Amino acid properties used to create the best-performing amino acid alphabet reveal the role of amino acid flexibility in the creation of amyloid aggregate.
+\end{frame}
+
+\section{Benchmark and summary}
+
+\begin{frame}
 Is performance of the AmyloGram, the classifier based on the best-performing reduced amino acid alphabet, also adequate on the independent dataset?
 \end{frame}
 
@@ -366,6 +368,8 @@ We identified a group of reduced amino acid alphabets which capture properties o
 Our algorithm was also capable of extracting n-gram associated with amyloidogenicity, partially confirming experimental results.
 
 Our software is available as a web-server: \url{smorfland.uni.wroc.pl/amylogram}.
+
+n-gram analysis workflow is implemented in the R package \textbf{biogram}: \url{https://cran.r-project.org/package=biogram}.
 
 \end{frame}
 
