@@ -60,62 +60,74 @@ Amyloid aggregates (red) around neurons (green). Strittmatter Laboratory, Yale U
   \begin{frame}{Aim}
   Analize structure of hot spots and create a novel predictor of amyloids.
   \begin{itemize}
-  \item Does amyloidogenicity depend on the exact sequence of amino acids?
   \item Which motifs are associated with amyloidogenicity?
+  \item Does amyloidogenicity depend on the exact sequence of amino acids?
   \end{itemize}
   \end{frame}
-  
-  
-\section{Learning framework}  
+
+    \begin{frame}{}
+\begin{figure} 
+\includegraphics[width=0.95\textwidth]{static_figure/ngram1.eps}
+\end{figure}
+  \end{frame}
   
     \begin{frame}{}
 \begin{figure} 
-\includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
+\includegraphics[width=0.95\textwidth]{static_figure/ngram2.eps}
 \end{figure}
-
-1. Extraction of overlapping hexamers from peptides with known amyloidicity status. 
   \end{frame}
 
-    \begin{frame}{}
-\begin{figure} 
-\includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-\end{figure}
-
-2. Clusterization of amino acids (AA) into groups (ID) using a combination of various 
-physicochemical properties (P1, P2, ...).   
-\end{frame}
-
-    \begin{frame}{}
-\begin{figure} 
-\includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-\end{figure}
-
-3. Encoding amino acids of hexamers into corresponding groups (reduced alphabet). 
-\end{frame}
-
-    \begin{frame}{}
-\begin{figure} 
-\includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-\end{figure}
-
-4. Extraction of encoded n-grams of different types.
-\end{frame}
-
-  \begin{frame}{}
-\begin{figure} 
-\includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-\end{figure}
-
-5. Selection of informative n-grams using Quick Permutation Test (QuiPT).
-\end{frame}
-
-  \begin{frame}{}
-\begin{figure} 
-\includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
-\end{figure}
-
-6. Cross-validation of encodings using random forest classifier, which is trained on the informative n-grams.
-\end{frame}
+  
+% \section{Amyloidogenic motifs}  
+%   
+%     \begin{frame}{}
+% \begin{figure} 
+% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
+% \end{figure}
+% 
+% 1. Extraction of overlapping hexamers from peptides with known amyloidicity status. 
+%   \end{frame}
+% 
+%     \begin{frame}{}
+% \begin{figure} 
+% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
+% \end{figure}
+% 
+% 2. Clusterization of amino acids (AA) into groups (ID) using a combination of various 
+% physicochemical properties (P1, P2, ...).   
+% \end{frame}
+% 
+%     \begin{frame}{}
+% \begin{figure} 
+% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
+% \end{figure}
+% 
+% 3. Encoding amino acids of hexamers into corresponding groups (reduced alphabet). 
+% \end{frame}
+% 
+%     \begin{frame}{}
+% \begin{figure} 
+% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
+% \end{figure}
+% 
+% 4. Extraction of encoded n-grams of different types.
+% \end{frame}
+% 
+%   \begin{frame}{}
+% \begin{figure} 
+% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
+% \end{figure}
+% 
+% 5. Selection of informative n-grams using Quick Permutation Test (QuiPT).
+% \end{frame}
+% 
+%   \begin{frame}{}
+% \begin{figure} 
+% \includegraphics[width=0.95\textwidth]{static_figure/scheme.eps}
+% \end{figure}
+% 
+% 6. Cross-validation of encodings using random forest classifier, which is trained on the informative n-grams.
+% \end{frame}
 
 
 %       \begin{frame}{}
@@ -318,7 +330,7 @@ Are informative n-grams found by QuiPT associated with amyloidogenicity?
 <<echo = FALSE,message=FALSE,fig.align='center',fig.width=14,fig.height=6,warning=FALSE>>=
 ngram_freq <- read.csv("ngram_freq.csv")
 
-ngram_freq_plot <- mutate(ngram_freq, decoded_name = gsub("_", "|", decoded_name)) %>%
+ngram_freq_plot <- mutate(ngram_freq, decoded_name = gsub("_", "-", decoded_name)) %>%
   mutate(decoded_name = factor(decoded_name, levels = as.character(decoded_name)),
          amyloid = diff_freq > 0) %>%
   melt() %>%
