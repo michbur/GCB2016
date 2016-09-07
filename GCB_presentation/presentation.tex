@@ -81,7 +81,7 @@
     Proteins associated with various neurodegenerative disorders (e.g., Alzheimer's, Parkinson'a's, Creutzfeldta-Jakob'a's diseases) creating harmful aggregates.
     
     \begin{figure} 
-\includegraphics[width=0.85\textwidth]{static_figure/amyloid_aggregates.jpg}
+\includegraphics[width=0.7\textwidth]{static_figure/amyloid_aggregates.jpg}
 \end{figure}
 
 Amyloid aggregates (red) around neurons (green). Strittmatter Laboratory, Yale University
@@ -91,18 +91,19 @@ Amyloid aggregates (red) around neurons (green). Strittmatter Laboratory, Yale U
   
   The aggregation of amyloids is initiated by 6- to 15-residue segments called hot spots, diverse subsequences that form unique zipper-like $\beta$-structures.
 \begin{figure} 
-\includegraphics[width=0.55\textwidth]{static_figure/zipper_structure.jpg}
+\includegraphics[width=0.9\textwidth]{static_figure/zipper_structure.jpg}
 \end{figure}
 
 \citet{sawaya_atomic_2007}
 \end{frame}
   
-  \begin{frame}
-  Which motifs are associated with amyloidogenicity?
-  Does amyloidogenicity depend on the exact sequence of amino acids?
+  
+\section{Amyloidogenic motifs}
+
+\begin{frame}
+  Which motifs (countinous or gapped subsequences of amino acids) are associated with amyloidogenicity?
   \end{frame}
 
-\section{Amyloidogenic motifs}
 
     \begin{frame}
 \begin{figure} 
@@ -151,15 +152,17 @@ QuiPT is avaible as part of the \textbf{biogram} R package.
 \begin{frame}
   Does amyloidogenicity depend on the exact sequence of amino acids?
   \end{frame}
-  
-    \begin{frame}{Reduced amino acid alphabets}
-\begin{figure} 
-\includegraphics[width=0.95\textwidth]{static_figure/ngram2.eps}
-\end{figure}
-  \end{frame}
 
 \begin{frame}{Standard reduced amino acid alphabets}
 To date, several reduced amino acid alphabets have been proposed, which have been applied to (among others) protein folding and protein structure prediction~\citep{kosiol_new_2004, melo_accuracy_2006}.
+  \end{frame}
+  
+    \begin{frame}{Standard reduced amino acid alphabets}
+\begin{figure} 
+\includegraphics[width=0.95\textwidth]{static_figure/ngram2.eps}
+\end{figure}
+
+
   \end{frame}
 
 
@@ -174,6 +177,8 @@ To date, several reduced amino acid alphabets have been proposed, which have bee
 
 
 \end{knitrout}
+
+Standard reduced amino acid alphabets do not enhance discrimination between amyloidogenic and non-amyloidogenic proteins.
   
   \end{frame}
 
@@ -194,6 +199,13 @@ To date, several reduced amino acid alphabets have been proposed, which have bee
 
     \end{frame}
   
+    \begin{frame}{Novel reduced amino acid alphabets}
+\begin{figure} 
+\includegraphics[width=0.95\textwidth]{static_figure/ngram2.eps}
+\end{figure}
+  \end{frame}
+
+
 
 \begin{frame}{Cross-validation}
 \begin{knitrout}
@@ -228,12 +240,8 @@ confidence interval.
 
 \end{knitrout}
   
-  \tiny
-Hinges of boxes correspond to 
-the 0.25 and 0.75 quartiles. The bar inside the box represents the median. The 
-gray circles correspond to the reduced alphabets with the AUC outside the 0.95 
-confidence interval.
 
+The best-performing reduced amino acid alphabet has the highest prediction rank in all test categories.
   
   \end{frame}
   
@@ -339,6 +347,8 @@ Amino acid properties used to create the best-performing amino acid alphabet rev
 Is performance of the AmyloGram, the classifier based on the best-performing reduced amino acid alphabet, also adequate on the independent dataset?
 \end{frame}
 
+\begin{frame}
+Waltz2 benchmark!!!\end{frame}
 
 \begin{frame}{Benchmark results}
 
