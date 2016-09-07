@@ -10,7 +10,7 @@
 \usepackage{colortbl, xcolor}
 
 
-\title{AmyloGram:a novel predictor of amyloidogenicity}
+\title{AmyloGram: a novel predictor of amyloidogenicity}
 \date{}
 \author{Micha\l{} Burdukiewicz\inst{1}, Piotr Sobczyk\inst{2}, Stefan R\"{o}diger\inst{3}, Pawe\l{} Mackiewicz\inst{1} and Ma\l{}gorzata Kotulska\inst{4}}
 \institute{\small{\textsuperscript{1}University of Wroc\l{}aw, Department of Genomics, 
@@ -34,6 +34,22 @@ library(reshape2)
 library(xtable)
 library(biogram)
 
+group2df <- function(group_list, caption = NULL, label = NULL) {
+  tab <- data.frame(Groups = sapply(group_list, function(i)
+    paste0(toupper(sort(i)), collapse = ", ")))
+  tab <- cbind(ID = 1L:nrow(tab), tab)
+  rws <- seq(1, nrow(tab) - 1, by = 2)
+  col <- rep("\\rowcolor[gray]{0.85}", length(rws))
+  colnames(tab) <- c("Subgroup ID", "Amino acids")
+  res <- print(xtable(tab, caption = caption, label = label), 
+               include.rownames = FALSE, booktabs = TRUE,
+               add.to.row = list(pos = as.list(rws), command = col), print.results = FALSE, 
+               caption.placement = "top", sanitize.text.function = identity, 
+               sanitize.rownames.function = identity)
+  #res
+  print(xtable(tab))
+}  
+  
 amyloids_plot <- read.csv("amyloid_plot_data.csv")
 
 levels(amyloids_plot[["et"]]) <- c("Best-performing reduced alphabet", 
@@ -46,6 +62,16 @@ amyloids_plot[["len_range"]] <- factor(amyloids_plot[["len_range"]],
                                                   "Test peptide length: 11-15", "Test peptide length: 16-25"))
 
 subdat <- filter(amyloids_plot, pos == "Training peptide length: 6")
+
+best_enc <- list(c("G"), 
+                 c("K", "P", "R"),
+                 c("I", "L", "V"),
+                 c("F", "W", "Y"),
+                 c("A", "C", "H", "M"),
+                 c("D", "E", "N", "Q", "S", "T"))
+names(best_enc) <- 1L:6
+
+
 @
   
   
@@ -220,7 +246,7 @@ confidence interval.
   \end{frame}
 
   
-    \begin{frame}{Cross-validation}
+    \begin{frame}{The best-perfoming reduced alphabet}
   <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
 
 ggplot(subdat, aes(x = len_range, y = AUC_mean)) +
@@ -242,6 +268,29 @@ ggplot(subdat, aes(x = len_range, y = AUC_mean)) +
 The best-performing reduced amino acid alphabet has the highest prediction rank in all test categories.
   
   \end{frame}
+
+     \begin{frame}{The best-perfoming reduced alphabet}
+   <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+# cat(group2df(best_enc, caption = "The best-performing reduced alphabet."))
+ @
+   \begin{table}[ht]
+\centering
+\begin{tabular}{rl}
+  \toprule
+Subgroup ID & Amino acids \\ 
+  \midrule
+  1 & G \\ 
+   \rowcolor[gray]{0.85}  2 & K, P, R \\ 
+    3 & I, L, V \\ 
+   \rowcolor[gray]{0.85}  4 & F, W, Y \\ 
+    5 & A, C, H, M \\ 
+   \rowcolor[gray]{0.85}  6 & D, E, N, Q, S, T \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+   
+   \end{frame}
+
   
 %'     \begin{frame}{Cross-validation}
 %'   <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
@@ -391,7 +440,7 @@ Waltz2 benchmark!!!\end{frame}
 Classifier & AUC & MCC \\ 
   \midrule
 AmyloGram & \textbf{0.8972} & \textbf{0.6307} \\ 
-  \rowcolor{white}PASTA 2.0\citep{walsh_pasta_2014} & 0.8550 & 0.4291  \\ 
+  \rowcolor{white}PASTA 2.0 \citep{walsh_pasta_2014} & 0.8550 & 0.4291  \\ 
    FoldAmyloid \citep{garbuzynskiy_foldamyloid:_2010} & 0.7351 & 0.4526  \\ 
   \rowcolor{white}APPNN \citep{familia_prediction_2015} & 0.8343 & 0.5823  \\ 
    \bottomrule

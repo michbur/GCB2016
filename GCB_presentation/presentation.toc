@@ -2,5 +2,5 @@
 \beamer@sectionintoc {1}{Amyloids}{2}{0}{1}
 \beamer@sectionintoc {2}{Amyloidogenic motifs}{5}{0}{2}
 \beamer@sectionintoc {3}{Reduced amino acid alphabets}{11}{0}{3}
-\beamer@sectionintoc {4}{Knowledge-discovery}{22}{0}{4}
-\beamer@sectionintoc {5}{Benchmark and summary}{26}{0}{5}
+\beamer@sectionintoc {4}{Knowledge-discovery}{23}{0}{4}
+\beamer@sectionintoc {5}{Benchmark and summary}{27}{0}{5}

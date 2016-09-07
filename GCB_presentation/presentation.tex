@@ -59,7 +59,7 @@
 \usepackage{colortbl, xcolor}
 
 
-\title{AmyloGram:a novel predictor of amyloidogenicity}
+\title{AmyloGram: a novel predictor of amyloidogenicity}
 \date{}
 \author{Micha\l{} Burdukiewicz\inst{1}, Piotr Sobczyk\inst{2}, Stefan R\"{o}diger\inst{3}, Pawe\l{} Mackiewicz\inst{1} and Ma\l{}gorzata Kotulska\inst{4}}
 \institute{\small{\textsuperscript{1}University of Wroc\l{}aw, Department of Genomics, 
@@ -228,7 +228,7 @@ confidence interval.
   \end{frame}
 
   
-    \begin{frame}{Cross-validation}
+    \begin{frame}{The best-perfoming reduced alphabet}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
@@ -244,6 +244,27 @@ confidence interval.
 The best-performing reduced amino acid alphabet has the highest prediction rank in all test categories.
   
   \end{frame}
+
+     \begin{frame}{The best-perfoming reduced alphabet}
+
+   \begin{table}[ht]
+\centering
+\begin{tabular}{rl}
+  \toprule
+Subgroup ID & Amino acids \\ 
+  \midrule
+  1 & G \\ 
+   \rowcolor[gray]{0.85}  2 & K, P, R \\ 
+    3 & I, L, V \\ 
+   \rowcolor[gray]{0.85}  4 & F, W, Y \\ 
+    5 & A, C, H, M \\ 
+   \rowcolor[gray]{0.85}  6 & D, E, N, Q, S, T \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+   
+   \end{frame}
+
   
 %'     \begin{frame}{Cross-validation}
 %'   <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
@@ -305,7 +326,7 @@ Is the best-performing reduced amino alphabet associated with amyloidogenicity?
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
-{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
 
 }
 
@@ -326,7 +347,7 @@ Are informative n-grams found by QuiPT associated with amyloidogenicity?
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
-{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
 
 }
 
@@ -360,7 +381,7 @@ Waltz2 benchmark!!!\end{frame}
 Classifier & AUC & MCC \\ 
   \midrule
 AmyloGram & \textbf{0.8972} & \textbf{0.6307} \\ 
-  \rowcolor{white}PASTA 2.0\citep{walsh_pasta_2014} & 0.8550 & 0.4291  \\ 
+  \rowcolor{white}PASTA 2.0 \citep{walsh_pasta_2014} & 0.8550 & 0.4291  \\ 
    FoldAmyloid \citep{garbuzynskiy_foldamyloid:_2010} & 0.7351 & 0.4526  \\ 
   \rowcolor{white}APPNN \citep{familia_prediction_2015} & 0.8343 & 0.5823  \\ 
    \bottomrule
