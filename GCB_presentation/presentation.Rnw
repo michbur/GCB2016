@@ -417,9 +417,6 @@ ggplot(ngram_freq_plot, aes(x = decoded_name, y = value)) +
 Out of 65 the most informative n-grams, 15 (23\%) were also found in the motifs validated experimentally~\citep{paz_sequence_2004}.
 \end{frame}
 
-\begin{frame}
-Amino acid properties used to create the best-performing amino acid alphabet reveal the role of amino acid flexibility in the creation of amyloid aggregate.
-\end{frame}
 
 \section{Benchmark and summary}
 
@@ -427,8 +424,6 @@ Amino acid properties used to create the best-performing amino acid alphabet rev
 Is performance of the AmyloGram, the classifier based on the best-performing reduced amino acid alphabet, also adequate on the independent dataset?
 \end{frame}
 
-\begin{frame}
-Waltz2 benchmark!!!\end{frame}
 
 \begin{frame}{Benchmark results}
 
