@@ -75,7 +75,7 @@ names(best_enc) <- 1L:6
 @
   
   
-    Proteins associated with various neurodegenerative disorders (e.g., Alzheimer's, Parkinson'a's, Creutzfeldta-Jakob'a's diseases) creating harmful aggregates.
+    Proteins associated with various neurodegenerative disorders (e.g., Alzheimer's, Parkinson's, Creutzfeldta-Jakob's diseases) creating harmful aggregates.
     
     \begin{figure} 
 \includegraphics[width=0.7\textwidth]{static_figure/amyloid_aggregates.jpg}
@@ -211,7 +211,7 @@ Standard reduced amino acid alphabets do not enhance discrimination between amyl
   
     \begin{frame}{Novel reduced amino acid alphabets}
 \begin{figure} 
-\includegraphics[width=0.95\textwidth]{static_figure/ngram2.eps}
+\includegraphics[width=0.95\textwidth]{static_figure/ngram3.eps}
 \end{figure}
   \end{frame}
 
@@ -458,9 +458,29 @@ n-gram analysis workflow is implemented in the R package \textbf{biogram}: \url{
 
 \end{frame}
 
-\begin{frame}{Funding}
+\begin{frame}{Contributors and funding}
 
 This research was partially funded by the KNOW Consortium and National Science Center (2015/17/N/NZ2/01845).
+
+\small{
+\begin{itemize}
+\item Paweł Mackiewicz,
+\item Stefan R\"{o}diger,
+\item \textbf{biogram} software (\url{https://cran.r-project.org/package=biogram}):
+\begin{itemize}
+\small
+\item Piotr Sobczyk,
+\item Chris Lauber,
+\end{itemize}
+
+\item \textbf{AmyLoad} database (\url{comprec-lin.iiar.pwr.edu.pl/amyload}):
+\begin{itemize}
+\small
+\item Paweł Woźniak,
+\item Małgorzata Kotulska.
+\end{itemize}
+\end{itemize}
+}
 
 \end{frame}
 

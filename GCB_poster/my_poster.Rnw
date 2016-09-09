@@ -1,0 +1,334 @@
+\documentclass[final]{beamer}
+\usepackage{grffile}
+\mode<presentation>{\usetheme{CambridgeUSPOL}}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{array,booktabs,tabularx}
+\usepackage{epstopdf}
+\usepackage{colortbl, xcolor}
+\newcolumntype{Z}{>{\centering\arraybackslash}X}
+
+% rysunki
+\usepackage{tikz}
+\usepackage{ifthen}
+\usepackage{xxcolor}
+\usetikzlibrary{arrows}
+\usetikzlibrary[topaths]
+\usetikzlibrary{decorations.pathreplacing}
+%\usepackage{times}\usefonttheme{professionalfonts}  % times is obsolete
+\usefonttheme[onlymath]{serif}
+\boldmath
+\usepackage[orientation=portrait,size=a0,scale=1.4,debug]{beamerposter}                       % e.g. for DIN-A0 poster
+%\usepackage[orientation=portrait,size=a1,scale=1.4,grid,debug]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+%\usepackage[size=custom,width=200,height=120,scale=2,debug]{beamerposter}                     % e.g. for custom size poster
+%\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+% ...
+%
+
+\usecolortheme{seagull}
+\useinnertheme{rectangles}
+\setbeamercolor{item projected}{bg=darkred}
+% \setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{caption}{\insertcaption} 
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamercolor{block title}{fg=darkred}
+\setbeamercolor{local structure}{fg=darkred}
+
+\setbeamercolor*{enumerate item}{fg=darkred}
+\setbeamercolor*{enumerate subitem}{fg=darkred}
+\setbeamercolor*{enumerate subsubitem}{fg=darkred}
+
+\setbeamercolor*{itemize item}{fg=darkred}
+\setbeamercolor*{itemize subitem}{fg=darkred}
+\setbeamercolor*{itemize subsubitem}{fg=darkred}
+
+\newlength{\columnheight}
+\setlength{\columnheight}{98.5cm}
+\renewcommand{\thetable}{}
+\def\andname{,}
+\authornote{}
+
+\renewcommand{\APACrefatitle}[2]{}
+\renewcommand{\bibliographytypesize}{\footnotesize} 
+\renewcommand{\APACrefYearMonthDay}[3]{%
+  {\BBOP}{#1}
+  {\BBCP}
+}
+
+\begin{document}
+
+<<knitrIntro, echo = FALSE, message=FALSE,warning=FALSE>>=
+source("my_ggplot_theme.R")
+
+library(dplyr)
+library(reshape2)
+library(xtable)
+library(biogram)
+
+load("signalhsmm_poster.RData")
+
+@
+
+
+\date{}
+
+\author{Micha\l{} Burdukiewicz\inst{1}*, Piotr Sobczyk\inst{2}, Pawe\l{} B\l{}a\.{z}ej\inst{1}, Pawe\l{} Mackiewicz\inst{1} \\
+*michalburdukiewicz@gmail.com}
+
+\institute{\small{\textsuperscript{1}University of Wroc\l{}aw, Department of Genomics, \textsuperscript{2}Wroc\l{}aw University of Science and Technology, Faculty of Pure and Applied Mathematics}
+}
+
+\title{\huge Predicting eukaryotic signal peptides using hidden Markov models}
+
+\begin{frame}
+\begin{columns}
+\begin{column}{.50\textwidth}
+\begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+\begin{minipage}[T]{.95\textwidth}
+\parbox[t][\columnheight]{\textwidth}
+{
+\begin{block}{Introduction}
+
+Secretory signal peptides:
+        \begin{itemize}
+          \item are short (20-30 residues) N-terminal amino acid sequences,
+            \item direct a protein to the endomembrane system and next to the extracellular localization,
+            \item possess three distinct domains with variable length and characteristic amino acid composition~\citep{hegde_surprising_2006}.
+            \item are universal enough to direct properly proteins in different secretory systems; artifically introduced bacterial signal peptides can guide proteins in mammals~\citep{nagano_2014} and plants~\citep{moeller_2009},
+            \item tag among others hormons, immune system proteins, structural proteins, and metabolic enzymes.
+        \end{itemize}
+
+    \end{block}
+
+\begin{block}{Training of AmyloGram}
+\begin{figure}[ht]
+        \centering
+        \scalebox{1.34}{
+          \includegraphics{static_figure/SP.png}
+        }
+      \end{figure}
+
+      \begin{itemize}
+        \item n-region: mostly basic residues~\citep{nielsen_prediction_1998},
+        \item h-region: strongly hydrophobic residues~\citep{nielsen_prediction_1998},
+        \item c-region: a few polar, uncharged residues~\citep{jain_signal_1994}.
+      \end{itemize}
+    \end{block}
+
+
+  \begin{block}{Hidden semi-Markov model (HSMM) of a signal peptide}
+      Assumptions of the model:
+      \begin{itemize}
+        \item the observable distribution of amino acids arises due to being in a certain region (state),
+        \item a duration of the state (the length of given region) is modeled by a probability distribution (other than geometric distribution as in typical hidden Markov models).
+      \end{itemize}
+    \end{block}
+    \vfill
+
+\begin{block}{Training  of the signal.hsmm algorithm}
+      \begin{enumerate}[1.]
+        \item Removal of atypical (non-standard amino acids, more than one cleavage site) or poorly annotated records from data set of proteins with signal peptide from UniProtKB 2014\_07 (after purification data set contains 3816 eukaryotic proteins with experimentally confirmed signal peptides and 9795 without signal peptide),
+        \item determination of n-, h-, c-regions by the heuristic algorithm,
+        \item reduction of dimensionality by aggregating amino acids to several physicochemical groups,
+        \item calculation of the amino acid group frequency in each region and the average length of the region,
+        \item training of two HSMM models for proteins with and without signal peptide.
+      \end{enumerate} 
+    \end{block}
+    \vfill
+    
+    \begin{block}{Classification of amino acids used by signal.hsmm}
+    \small{
+<<echo = FALSE,message=FALSE,results='asis'>>=
+tabAminokwasow = function(aminokwasy, nazwyGrupy, ...) {
+  tab = cbind(data.frame(1:length(aminokwasy)), 
+              data.frame(sapply(aminokwasy, function(x) paste(x, collapse=", "))))
+  dimnames(tab) = list(nazwyGrupy, c("Group", "Amino acids"))
+  return(xtable(tab, align = c("r", "c", "l"), ...))
+}
+
+aa5 = list('1' = c("K", "R", "H"),
+           '2' = c("V","I","L","M","F","W","C"),
+           '3' = c("S", "T", "N", "Q"),
+           '4' = c("D","E","A","P","Y","G"))
+print(tabAminokwasow(aa5, c("Positively charged", "Nonpolar and aliphatic",
+                            "Polar and uncharged", "Negatively charged and nonpolar")))
+@ 
+    }
+    \end{block}
+    \vfill
+    
+    \begin{block}{Signal peptide prediction}
+    During the test phase, each protein is fitted to two HSMMs representing respectively proteins with and without signal peptides. The probabilities of both fits and predicted cleavage site constitute the software output.    
+    \begin{figure}
+    \centering
+    \resizebox{32.5cm}{!}{%
+    \begin{tikzpicture}[->,>=stealth',shorten >=2pt,auto,node distance=9.5cm, thick]
+      \tikzstyle{line} = [draw=black, color=blue!30!black!50, line width=4.5mm, -latex']
+      \tikzstyle{main node} = [circle,fill=blue!20,draw, minimum size = 2.2cm, font=\itshape,
+         align=center,  top color=white, bottom color=blue!50!black!70 ] %font=\sffamily\small\bfseries,
+      %nodes
+      \node[main node]          	(start') 	[]						{Start};	     
+      \node[main node, bottom color=purple!70!black!70] 	(nregion') 	[right of=start',xshift=-5mm, yshift=15mm] 	{n-region};
+      \node[main node, bottom color=pink!70!black!70] 	(hregion') 	[right of=nregion',xshift=-5mm,yshift=15mm] 	{h-region};
+      \node[main node, bottom color=gray!70!black!70] 	(cregion') 	[right of=hregion',xshift=-5mm,yshift=-15mm] 	{c-region};
+      \node[main node, bottom color=green!70!black!70] 	(mature') 	[right of=cregion',xshift=-5mm, yshift=-15mm] 	{Mature protein};
+      
+      %lines
+      \path [line] (start')   edge node [left, color=black] {} (nregion');
+      \path [line] (nregion') edge node [below, color=black] { } (hregion');
+      \path [line] (hregion') edge node [below, color=black] { } (cregion');
+      \path [line] (cregion') edge node [left, color=black] { } (mature');
+      \draw [line] (start') to[out=340,in=200] (mature');
+    \end{tikzpicture} }
+    \end{figure}
+
+
+    \end{block}
+    \vfill   
+
+
+}
+\end{minipage}
+\end{beamercolorbox}
+\end{column}
+
+
+%new column ------------------------------------------------------    
+
+\begin{column}{.51\textwidth}
+\begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+\begin{minipage}[T]{.95\textwidth}  
+\parbox[t][\columnheight]{\textwidth}
+{
+
+    \begin{block}{Validation procedure}
+    \begin{enumerate}[1.]
+      \item Choose randomly (without replacement) 3816 proteins without signal peptides, reshuffle 3816 proteins with signal peptides.
+      \item Perform 5-fold cross-validation.
+      \item Repeat step 1. and 2. 250 times.
+    \end{enumerate} 
+    \end{block}
+    \vfill
+    
+    \begin{block}{Validation results}
+    \begin{figure}
+    \scalebox{0.86}{    
+<<echo = FALSE,message=FALSE,fig.width=14,fig.align='center'>>=
+metrics <- t(poster_data[["metrics"]][c("AUC", "H", "Gini", "Recall", "Spec", "Precision"), ])
+melted_metrics <- do.call(rbind, lapply(1L:ncol(metrics), function(i)
+       data.frame(metric = rep(colnames(metrics)[i], nrow(metrics)),
+                  value = unlist(metrics[, i]))))
+melted_metrics[["metric"]] <- as.factor(melted_metrics[["metric"]])
+levels(melted_metrics[["metric"]]) <- c("AUC", "H-measure", "Gini index", "Recall", "Specificity", "Precision")
+ggplot(melted_metrics, aes(x = metric, y = value)) + 
+  geom_boxplot() +
+  scale_x_discrete(name = "Performance measure") + 
+  scale_y_continuous(name = "Value") +
+  poster_theme
+@
+    }
+    \end{figure}
+
+The mean AUC obtained in the cross-validation is  \Sexpr{round(mean(unlist(poster_data[["metrics"]]["AUC", ])), 4)}
+    
+    \begin{figure}
+    \scalebox{0.86}{    
+<<echo = FALSE,message=FALSE,fig.width=14,fig.align='center'>>=
+position_data <- poster_data[["position_table"]]
+position_data[["Freq"]] <- position_data[["Freq"]]/sum(position_data[["Freq"]])
+
+annotation <- paste0(round(sum(position_data[!(as.numeric(as.character(position_data[, "Var1"])) > -16 & as.numeric(as.character(position_data[, "Var1"])) < 16), "Freq"]), 4), " cases ommited")
+
+position_data_plot <- position_data[as.numeric(as.character(position_data[, "Var1"])) > -16 & as.numeric(as.character(position_data[, "Var1"])) < 16, ]
+
+ggplot(position_data_plot, aes(x = Var1, y = Freq)) + 
+  geom_bar(stat = "identity") + 
+  scale_y_continuous(name = "Proportion of predicted cleavage sites") +
+  scale_x_discrete("Predicted cleavage site misplacement") +
+  poster_theme + 
+  annotate("rect", xmin = 22.5, xmax = 29.5, ymin = 0.147 + 0.1, ymax = 0.19 + 0.1,
+  alpha = 1, fill = "grey") +
+  annotate("text", x = 26, y = 0.17 + 0.1, size=6, label = annotation)
+@
+    }
+    \end{figure}
+    
+The mean absolute cleavage site misplacement (MAM) (mean absolute distance between real clave site and predicted cleavage site) is \Sexpr{round(poster_data[["mean"]], 4)}.
+    
+    \end{block}
+    \vfill
+    
+    \begin{block}{Comparision with other signal peptide predictors}
+    Benchmark data set: 140 eukaryotic proteins with signal peptide and 280 randomly chosen eukaryotic proteins without signal peptide added after 2010.
+    
+    \vspace{.5cm}
+    
+    signal.hsmm1987: trained on data set of 496 eukaryotic proteins with signal peptides added before year 1987.
+    
+    \vspace{.5cm}
+    
+    signal.hsmm2010: trained on data set of 3676 eukaryotic proteins with signal peptides added before year 2010.
+    \end{block}
+    \vfill
+    
+    
+    
+    \begin{block}{Results of comparision}
+    \small{
+<<echo = FALSE,message=FALSE,results='asis'>>=
+load("benchmark_dat.RData")
+benchmark_dat <- benchmark_dat[, c("AUC", "H", "Gini", "positions")]
+colnames(benchmark_dat) <- c("AUC", "H-measure", "Gini index", "MAM")
+xtable(benchmark_dat, align = c("r", rep("c", 4)), digits = 4)
+@ 
+    } 
+    MAM - mean absolute cleavage site misplacement.
+    \end{block}
+    \vfill
+     
+    \begin{block}{Conclusions}
+      Hidden semi-Markov models can be used to accurately predict the presence of secretory signal peptides effectively extracting information from very data sets. Prediction of cleavage site position still requires refinement.
+    \end{block}
+    \vfill 
+    
+        \begin{block}{Availability and funding}
+        \footnotesize{
+      signal.hsmm web server: 
+      
+      \url{www.smorfland.uni.wroc.pl/signalhsmm}$\begin{array}{l}
+        \begin{figure}[ht]
+        \centering
+        \scalebox{0.3}{
+          \includegraphics{qrsignalhsmm.png}
+        }
+        \end{figure}
+      \end{array}
+      $
+        }
+        
+        This research was partially funded by KNOW Consortium.
+    \end{block}
+    \vfill 
+     
+     
+    \begin{block}{Bibliography}
+    \tiny{
+      \bibliographystyle{apalike}
+      \bibliography{signalhsmm_poster}
+    }
+    \end{block}
+    \vfill 
+
+
+}
+\end{minipage}
+\end{beamercolorbox}
+\end{column}
+\end{columns}  
+\end{frame}
+\end{document}
