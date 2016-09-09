@@ -48,7 +48,7 @@
 \setbeamercolor*{itemize subsubitem}{fg=darkred}
 
 \newlength{\columnheight}
-\setlength{\columnheight}{98.5cm}
+\setlength{\columnheight}{100.5cm}
 \renewcommand{\thetable}{}
 \def\andname{,}
 \authornote{}
@@ -130,7 +130,7 @@ Secretory signal peptides:
     \end{block}
     \vfill
 
-\begin{block}{Training  of the signal.hsmm algorithm}
+\begin{block}{Training  of the signalHsmm algorithm}
       \begin{enumerate}[1.]
         \item Removal of atypical (non-standard amino acids, more than one cleavage site) or poorly annotated records from data set of proteins with signal peptide from UniProtKB 2014\_07 (after purification data set contains 3816 eukaryotic proteins with experimentally confirmed signal peptides and 9795 without signal peptide),
         \item determination of n-, h-, c-regions by the heuristic algorithm,
@@ -141,7 +141,7 @@ Secretory signal peptides:
     \end{block}
     \vfill
     
-    \begin{block}{Classification of amino acids used by signal.hsmm}
+    \begin{block}{Classification of amino acids used by signalHsmm}
     \small{
 <<echo = FALSE,message=FALSE,results='asis'>>=
 tabAminokwasow = function(aminokwasy, nazwyGrupy, ...) {
@@ -229,7 +229,7 @@ ggplot(melted_metrics, aes(x = metric, y = value)) +
   geom_boxplot() +
   scale_x_discrete(name = "Performance measure") + 
   scale_y_continuous(name = "Value") +
-  poster_theme
+  my_theme
 @
     }
     \end{figure}
@@ -250,7 +250,7 @@ ggplot(position_data_plot, aes(x = Var1, y = Freq)) +
   geom_bar(stat = "identity") + 
   scale_y_continuous(name = "Proportion of predicted cleavage sites") +
   scale_x_discrete("Predicted cleavage site misplacement") +
-  poster_theme + 
+  my_theme + 
   annotate("rect", xmin = 22.5, xmax = 29.5, ymin = 0.147 + 0.1, ymax = 0.19 + 0.1,
   alpha = 1, fill = "grey") +
   annotate("text", x = 26, y = 0.17 + 0.1, size=6, label = annotation)
@@ -268,11 +268,11 @@ The mean absolute cleavage site misplacement (MAM) (mean absolute distance betwe
     
     \vspace{.5cm}
     
-    signal.hsmm1987: trained on data set of 496 eukaryotic proteins with signal peptides added before year 1987.
+    signalHsmm1987: trained on data set of 496 eukaryotic proteins with signal peptides added before year 1987.
     
     \vspace{.5cm}
     
-    signal.hsmm2010: trained on data set of 3676 eukaryotic proteins with signal peptides added before year 2010.
+    signalHsmm2010: trained on data set of 3676 eukaryotic proteins with signal peptides added before year 2010.
     \end{block}
     \vfill
     
@@ -298,7 +298,7 @@ xtable(benchmark_dat, align = c("r", rep("c", 4)), digits = 4)
     
         \begin{block}{Availability and funding}
         \footnotesize{
-      signal.hsmm web server: 
+      signalHsmm web server: 
       
       \url{www.smorfland.uni.wroc.pl/signalhsmm}$\begin{array}{l}
         \begin{figure}[ht]
