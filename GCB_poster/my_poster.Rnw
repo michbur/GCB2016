@@ -187,7 +187,6 @@ print(tabAminokwasow(aa5, c("Positively charged", "Nonpolar and aliphatic",
     \end{tikzpicture} }
     \end{figure}
 
-
     \end{block}
     \vfill   
 
@@ -215,53 +214,52 @@ print(tabAminokwasow(aa5, c("Positively charged", "Nonpolar and aliphatic",
     \end{block}
     \vfill
     
-    \begin{block}{Validation results}
-    \begin{figure}
-    \scalebox{0.86}{    
-<<echo = FALSE,message=FALSE,fig.width=14,fig.align='center'>>=
-metrics <- t(poster_data[["metrics"]][c("AUC", "H", "Gini", "Recall", "Spec", "Precision"), ])
-melted_metrics <- do.call(rbind, lapply(1L:ncol(metrics), function(i)
-       data.frame(metric = rep(colnames(metrics)[i], nrow(metrics)),
-                  value = unlist(metrics[, i]))))
-melted_metrics[["metric"]] <- as.factor(melted_metrics[["metric"]])
-levels(melted_metrics[["metric"]]) <- c("AUC", "H-measure", "Gini index", "Recall", "Specificity", "Precision")
-ggplot(melted_metrics, aes(x = metric, y = value)) + 
-  geom_boxplot() +
-  scale_x_discrete(name = "Performance measure") + 
-  scale_y_continuous(name = "Value") +
+     \begin{block}{Classification of amino acids used by signalHsmm}
+<<echo = FALSE,message=FALSE,results='asis',fig.width=14>>=
+freq_nondeg <- read.csv2("freq_nondeg.csv")[, -1]
+freq_deg <- read.csv2("freq_deg.csv")[, -1]
+
+do_pca <- function(x) 
+  x %>% 
+  select(-type, -taxon) %>% 
+  prcomp(center = TRUE, scale = TRUE) %>% 
+  getElement("x") %>% 
+  data.frame() %>% 
+  select(1, 2) %>% 
+  cbind(select(x, type, taxon), .) %>% 
+  mutate(type_nice = factor(type, labels = c("Mature peptide\n", "Signal peptide\n")),
+         taxon_nice = factor(taxon, labels = c("other", "Plasmodium"))) %>% 
+  mutate(both = paste0(type_nice, "(", taxon_nice, ")\n"))
+
+dat_deg <- do_pca(freq_deg) 
+dat_nondeg <- do_pca(freq_nondeg)
+
+# dat_deg <- read.table("PCAgr.txt", header = TRUE, sep = "\t")
+# dat_nondeg <- read.table("PCA.txt", header = TRUE, sep = "\t")
+# colnames(dat_deg) <- c("both", "PC1", "PC2")
+# colnames(dat_nondeg) <- c("both", "PC1", "PC2")
+
+plot_pca <- function(x)
+  ggplot(x, aes(x = PC1, y = PC2, fill = both)) + 
+  geom_density_2d(color = "black", contour = TRUE) +
+  #geom_point() +
+  stat_density2d(aes(fill=both,alpha=..level..), color = "black", contour = TRUE, geom="polygon") +
+  scale_linetype_discrete("") +
+  scale_fill_discrete("") +
+  scale_shape_discrete("") +
+  scale_color_discrete("") +
+  scale_alpha_continuous(range = c(0.25, 0.4)) +
+  guides(alpha = FALSE) +
   my_theme
-@
-    }
-    \end{figure}
 
-The mean AUC obtained in the cross-validation is  \Sexpr{round(mean(unlist(poster_data[["metrics"]]["AUC", ])), 4)}
-    
-    \begin{figure}
-    \scalebox{0.86}{    
-<<echo = FALSE,message=FALSE,fig.width=14,fig.align='center'>>=
-position_data <- poster_data[["position_table"]]
-position_data[["Freq"]] <- position_data[["Freq"]]/sum(position_data[["Freq"]])
+plot_pca(dat_nondeg) + ggtitle("Full alphabet") + guides(fill=FALSE)
 
-annotation <- paste0(round(sum(position_data[!(as.numeric(as.character(position_data[, "Var1"])) > -16 & as.numeric(as.character(position_data[, "Var1"])) < 16), "Freq"]), 4), " cases ommited")
+plot_pca(dat_deg) + ggtitle("Reduced alphabet signalHsmm")
+@ 
 
-position_data_plot <- position_data[as.numeric(as.character(position_data[, "Var1"])) > -16 & as.numeric(as.character(position_data[, "Var1"])) < 16, ]
-
-ggplot(position_data_plot, aes(x = Var1, y = Freq)) + 
-  geom_bar(stat = "identity") + 
-  scale_y_continuous(name = "Proportion of predicted cleavage sites") +
-  scale_x_discrete("Predicted cleavage site misplacement") +
-  my_theme + 
-  annotate("rect", xmin = 22.5, xmax = 29.5, ymin = 0.147 + 0.1, ymax = 0.19 + 0.1,
-  alpha = 1, fill = "grey") +
-  annotate("text", x = 26, y = 0.17 + 0.1, size=6, label = annotation)
-@
-    }
-    \end{figure}
-    
-The mean absolute cleavage site misplacement (MAM) (mean absolute distance between real clave site and predicted cleavage site) is \Sexpr{round(poster_data[["mean"]], 4)}.
-    
     \end{block}
     \vfill
+
     
     \begin{block}{Comparision with other signal peptide predictors}
     Benchmark data set: 140 eukaryotic proteins with signal peptide and 280 randomly chosen eukaryotic proteins without signal peptide added after 2010.
@@ -311,7 +309,7 @@ xtable(benchmark_dat, align = c("r", rep("c", 4)), digits = 4)
       $
         }
         
-        This research was partially funded by KNOW Consortium.
+        This research was partially funded by the KNOW Consortium and National Science Center (2015/17/N/NZ2/01845).
     \end{block}
     \vfill 
      
