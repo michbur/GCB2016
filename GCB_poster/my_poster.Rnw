@@ -142,23 +142,23 @@ Secretory signal peptides:
     \vfill
     
     \begin{block}{Classification of amino acids used by signalHsmm}
-    \small{
-<<echo = FALSE,message=FALSE,results='asis'>>=
-tabAminokwasow = function(aminokwasy, nazwyGrupy, ...) {
-  tab = cbind(data.frame(1:length(aminokwasy)), 
-              data.frame(sapply(aminokwasy, function(x) paste(x, collapse=", "))))
-  dimnames(tab) = list(nazwyGrupy, c("Group", "Amino acids"))
-  return(xtable(tab, align = c("r", "c", "l"), ...))
-}
+\begin{table}[ht]
+\centering
+\caption{The encoding of amino acids with the best sensitivity.} 
+\begin{tabular}{ll}
+  \toprule
+Group & Amino acids \\ 
+  \midrule
+1 & D, E, H, K, N, Q, R \\ 
+   \rowcolor[gray]{0.85}2 & G, P, S, T, Y \\ 
+  3 & F, I, L, M, V, W \\ 
+   \rowcolor[gray]{0.85} 4 & A, C \\ 
+   \bottomrule
+\end{tabular}
 
-aa5 = list('1' = c("K", "R", "H"),
-           '2' = c("V","I","L","M","F","W","C"),
-           '3' = c("S", "T", "N", "Q"),
-           '4' = c("D","E","A","P","Y","G"))
-print(tabAminokwasow(aa5, c("Positively charged", "Nonpolar and aliphatic",
-                            "Polar and uncharged", "Negatively charged and nonpolar")))
-@ 
-    }
+%\end{table}
+
+\end{table}
     \end{block}
     \vfill
     
@@ -261,7 +261,7 @@ plot_pca(dat_deg) + ggtitle("Reduced alphabet signalHsmm")
     \vfill
 
     
-    \begin{block}{Comparision with other signal peptide predictors}
+    \begin{block}{Benchmark with other predictors of signal peptides}
     Benchmark data set: 140 eukaryotic proteins with signal peptide and 280 randomly chosen eukaryotic proteins without signal peptide added after 2010.
     
     \vspace{.5cm}
@@ -271,21 +271,29 @@ plot_pca(dat_deg) + ggtitle("Reduced alphabet signalHsmm")
     \vspace{.5cm}
     
     signalHsmm2010: trained on data set of 3676 eukaryotic proteins with signal peptides added before year 2010.
-    \end{block}
-    \vfill
-    
-    
-    
-    \begin{block}{Results of comparision}
-    \small{
-<<echo = FALSE,message=FALSE,results='asis'>>=
-load("benchmark_dat.RData")
-benchmark_dat <- benchmark_dat[, c("AUC", "H", "Gini", "positions")]
-colnames(benchmark_dat) <- c("AUC", "H-measure", "Gini index", "MAM")
-xtable(benchmark_dat, align = c("r", rep("c", 4)), digits = 4)
-@ 
-    } 
-    MAM - mean absolute cleavage site misplacement.
+    \small
+    \begin{table}[ht]
+\centering
+\begin{tabular}{rllll}
+  \toprule
+ & Sensitivity & Specificity & MCC & AUC \\ 
+  \midrule
+signalP 4.1 (no tm) & 0.8235 & 0.9100 & 0.6872 & 0.8667 \\ 
+   \rowcolor[gray]{0.85}signalP 4.1 (tm) & 0.6471 & 0.9431 & 0.6196 & 0.7951 \\ 
+  signalP 3.0 (NN) \citep{DyrlovBendtsen2004783} & 0.8824 & 0.9052 & 0.7220 & 0.8938 \\ 
+   \rowcolor[gray]{0.85}signalP 3.0 (HMM) \citep{DyrlovBendtsen2004783} & 0.6275 & 0.9194 & 0.5553 & 0.7734 \\ 
+  PrediSi & 0.3333 & \textbf{0.9573} & 0.3849 & 0.6453 \\ 
+   \rowcolor[gray]{0.85}Philius& 0.6078 & 0.9336 & 0.5684 & 0.7707 \\ 
+  Phobius & 0.6471 & 0.9289 & 0.5895 & 0.7880 \\ 
+   \rowcolor[gray]{0.85}signalHsmm-2010 & 0.9804 & 0.8720 & 0.7409 & 0.9262 \\ 
+  signalHsmm-2010 (hom. 50\%) & \textbf{1.0000} & 0.8768 & \textbf{0.7621} & \textbf{0.9384} \\ 
+   \rowcolor[gray]{0.85}signalHsmm-2010 (raw aa) & 0.8431 & 0.9005 & 0.6853 & 0.8718 \\ 
+  signalHsmm-1987 & 0.9216 & 0.8910 & 0.7271 & 0.9063 \\ 
+   \rowcolor[gray]{0.85}signalHsmm-1987 (hom. 50\%) & 0.9412 & 0.8768 & 0.7194 & 0.9090 \\ 
+  signalHsmm-1987 (raw aa) & 0.7647 & 0.9052 & 0.6350 & 0.8350 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
     \end{block}
     \vfill
      
@@ -295,19 +303,10 @@ xtable(benchmark_dat, align = c("r", rep("c", 4)), digits = 4)
     \vfill 
     
         \begin{block}{Availability and funding}
-        \footnotesize{
       signalHsmm web server: 
       
-      \url{www.smorfland.uni.wroc.pl/signalhsmm}$\begin{array}{l}
-        \begin{figure}[ht]
-        \centering
-        \scalebox{0.3}{
-          \includegraphics{qrsignalhsmm.png}
-        }
-        \end{figure}
-      \end{array}
-      $
-        }
+      \url{www.smorfland.uni.wroc.pl/signalhsmm}
+
         
         This research was partially funded by the KNOW Consortium and National Science Center (2015/17/N/NZ2/01845).
     \end{block}
