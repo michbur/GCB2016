@@ -65,12 +65,20 @@
 <<knitrIntro, echo = FALSE, message=FALSE,warning=FALSE>>=
 source("my_ggplot_theme.R")
 
+g_legend<-function(a.gplot){
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)}
+
 library(dplyr)
 library(reshape2)
 library(xtable)
 library(biogram)
 
 load("signalhsmm_poster.RData")
+
+
 
 @
 
@@ -94,21 +102,16 @@ load("signalhsmm_poster.RData")
 {
 \begin{block}{Introduction}
 
-Secretory signal peptides:
-        \begin{itemize}
-          \item are short (20-30 residues) N-terminal amino acid sequences,
-            \item direct a protein to the endomembrane system and next to the extracellular localization,
-            \item possess three distinct domains with variable length and characteristic amino acid composition~\citep{hegde_surprising_2006}.
-            \item are universal enough to direct properly proteins in different secretory systems; artifically introduced bacterial signal peptides can guide proteins in mammals~\citep{nagano_2014} and plants~\citep{moeller_2009},
-            \item tag among others hormons, immune system proteins, structural proteins, and metabolic enzymes.
-        \end{itemize}
+The computational methods for the recognition of signal peptides accurately identify typical peptides, well-represented in protein databases~\cite{petersen_signalp_2011}. However, these algorithms are not general enough to predict more unique signal peptides, for example those present in proteins from parasites belonging to the phylum Apicomplexa. 
+
+Apicomplexans are characterized by a strongly AT-biased genomes and resulting from that the specific amino acid composition of coded proteins, which hinders their computational detection by general predictors. Nevertheless, members of Apicomplexa have a great medically significance, especially Plasmodium, a malaria agent. 
 
     \end{block}
 
 \begin{block}{Training of AmyloGram}
 \begin{figure}[ht]
         \centering
-        \scalebox{1.34}{
+        \scalebox{1.22}{
           \includegraphics{static_figure/SP.png}
         }
       \end{figure}
@@ -140,27 +143,7 @@ Secretory signal peptides:
       \end{enumerate} 
     \end{block}
     \vfill
-    
-    \begin{block}{Classification of amino acids used by signalHsmm}
-\begin{table}[ht]
-\centering
-\caption{The encoding of amino acids with the best sensitivity.} 
-\begin{tabular}{ll}
-  \toprule
-Group & Amino acids \\ 
-  \midrule
-1 & D, E, H, K, N, Q, R \\ 
-   \rowcolor[gray]{0.85}2 & G, P, S, T, Y \\ 
-  3 & F, I, L, M, V, W \\ 
-   \rowcolor[gray]{0.85} 4 & A, C \\ 
-   \bottomrule
-\end{tabular}
-
-%\end{table}
-
-\end{table}
-    \end{block}
-    \vfill
+  
     
     \begin{block}{Signal peptide prediction}
     During the test phase, each protein is fitted to two HSMMs representing respectively proteins with and without signal peptides. The probabilities of both fits and predicted cleavage site constitute the software output.    
@@ -190,6 +173,35 @@ Group & Amino acids \\
     \end{block}
     \vfill   
 
+    \begin{block}{Classification of amino acids used by signalHsmm}
+\begin{table}[ht]
+\centering
+\begin{tabular}{ll}
+  \toprule
+Group & Amino acids \\ 
+  \midrule
+1 & D, E, H, K, N, Q, R \\ 
+   \rowcolor[gray]{0.85}2 & G, P, S, T, Y \\ 
+  3 & F, I, L, M, V, W \\ 
+   \rowcolor[gray]{0.85} 4 & A, C \\ 
+   \bottomrule
+\end{tabular}
+
+%\end{table}
+
+\end{table}
+    \end{block}
+    \vfill
+
+
+\begin{block}{Availability and funding}
+      \small
+      signalHsmm web server: \url{www.smorfland.uni.wroc.pl/signalhsmm}
+
+    This research was partially funded by the KNOW Consortium and National Science Center (2015/17/N/NZ2/01845).
+    \end{block}
+    \vfill 
+
 
 }
 \end{minipage}
@@ -205,17 +217,8 @@ Group & Amino acids \\
 \parbox[t][\columnheight]{\textwidth}
 {
 
-    \begin{block}{Validation procedure}
-    \begin{enumerate}[1.]
-      \item Choose randomly (without replacement) 3816 proteins without signal peptides, reshuffle 3816 proteins with signal peptides.
-      \item Perform 5-fold cross-validation.
-      \item Repeat step 1. and 2. 250 times.
-    \end{enumerate} 
-    \end{block}
-    \vfill
-    
-     \begin{block}{Classification of amino acids used by signalHsmm}
-<<echo = FALSE,message=FALSE,results='asis',fig.width=14>>=
+     \begin{block}{PCA of signal peptides and mature proteins}
+<<echo = FALSE,message=FALSE,results='asis',fig.width=14, fig.height=14.5>>=
 freq_nondeg <- read.csv2("freq_nondeg.csv")[, -1]
 freq_deg <- read.csv2("freq_deg.csv")[, -1]
 
@@ -227,9 +230,9 @@ do_pca <- function(x)
   data.frame() %>% 
   select(1, 2) %>% 
   cbind(select(x, type, taxon), .) %>% 
-  mutate(type_nice = factor(type, labels = c("Mature peptide\n", "Signal peptide\n")),
+  mutate(type_nice = factor(type, labels = c("\nMature peptide", "\nSignal peptide")),
          taxon_nice = factor(taxon, labels = c("other", "Plasmodium"))) %>% 
-  mutate(both = paste0(type_nice, "(", taxon_nice, ")\n"))
+  mutate(both = paste0(type_nice, " (", taxon_nice, ")\n"))
 
 dat_deg <- do_pca(freq_deg) 
 dat_nondeg <- do_pca(freq_nondeg)
@@ -248,21 +251,28 @@ plot_pca <- function(x)
   scale_fill_discrete("") +
   scale_shape_discrete("") +
   scale_color_discrete("") +
+  scale_x_continuous("Principal Component 1") +
+  scale_y_continuous("Principal Component 2") +
   scale_alpha_continuous(range = c(0.25, 0.4)) +
   guides(alpha = FALSE) +
   my_theme
 
-plot_pca(dat_nondeg) + ggtitle("Full alphabet") + guides(fill=FALSE)
+p1 <- plot_pca(dat_nondeg) + ggtitle("Full alphabet") 
+p2 <- plot_pca(dat_deg) + ggtitle("Reduced alphabet") + guides(fill = FALSE)
+leg <- g_legend(p1)
 
-plot_pca(dat_deg) + ggtitle("Reduced alphabet signalHsmm")
+grid.arrange(p1 + guides(fill = FALSE), p2, leg, nrow = 3, heights = c(0.47, 0.47, 0.06))
+
 @ 
+
+Countour plot of first two components in Pricincipal Compoment Analysis of amino acid frequency. The signal peptides from malaria and other taxons differ significantly when the full amino acid alphabet is employed. After the reduction of the alphabet, the signal peptides group together despite their origin.
 
     \end{block}
     \vfill
 
     
     \begin{block}{Benchmark with other predictors of signal peptides}
-    Benchmark data set: 140 eukaryotic proteins with signal peptide and 280 randomly chosen eukaryotic proteins without signal peptide added after 2010.
+    Benchmark data set: 51 proteins with signal peptide and 211 proteins without signal peptide from members of \textit{Plasmodiidae}.
     
     \vspace{.5cm}
     
@@ -278,13 +288,13 @@ plot_pca(dat_deg) + ggtitle("Reduced alphabet signalHsmm")
   \toprule
  & Sensitivity & Specificity & MCC & AUC \\ 
   \midrule
-signalP 4.1 (no tm) & 0.8235 & 0.9100 & 0.6872 & 0.8667 \\ 
-   \rowcolor[gray]{0.85}signalP 4.1 (tm) & 0.6471 & 0.9431 & 0.6196 & 0.7951 \\ 
+signalP 4.1 (no tm) \citep{petersen_signalp_2011} & 0.8235 & 0.9100 & 0.6872 & 0.8667 \\ 
+   \rowcolor[gray]{0.85}signalP 4.1 (tm) \citep{petersen_signalp_2011} & 0.6471 & 0.9431 & 0.6196 & 0.7951 \\ 
   signalP 3.0 (NN) \citep{DyrlovBendtsen2004783} & 0.8824 & 0.9052 & 0.7220 & 0.8938 \\ 
    \rowcolor[gray]{0.85}signalP 3.0 (HMM) \citep{DyrlovBendtsen2004783} & 0.6275 & 0.9194 & 0.5553 & 0.7734 \\ 
-  PrediSi & 0.3333 & \textbf{0.9573} & 0.3849 & 0.6453 \\ 
-   \rowcolor[gray]{0.85}Philius& 0.6078 & 0.9336 & 0.5684 & 0.7707 \\ 
-  Phobius & 0.6471 & 0.9289 & 0.5895 & 0.7880 \\ 
+  PrediSi \citep{hiller_predisi:_2004} & 0.3333 & \textbf{0.9573} & 0.3849 & 0.6453 \\ 
+   \rowcolor[gray]{0.85}Philius \citep{reynolds_transmembrane_2008} & 0.6078 & 0.9336 & 0.5684 & 0.7707 \\ 
+  Phobius \citep{kall_combined_2004} & 0.6471 & 0.9289 & 0.5895 & 0.7880 \\ 
    \rowcolor[gray]{0.85}signalHsmm-2010 & 0.9804 & 0.8720 & 0.7409 & 0.9262 \\ 
   signalHsmm-2010 (hom. 50\%) & \textbf{1.0000} & 0.8768 & \textbf{0.7621} & \textbf{0.9384} \\ 
    \rowcolor[gray]{0.85}signalHsmm-2010 (raw aa) & 0.8431 & 0.9005 & 0.6853 & 0.8718 \\ 
@@ -298,19 +308,15 @@ signalP 4.1 (no tm) & 0.8235 & 0.9100 & 0.6872 & 0.8667 \\
     \vfill
      
     \begin{block}{Conclusions}
-      Hidden semi-Markov models can be used to accurately predict the presence of secretory signal peptides effectively extracting information from very data sets. Prediction of cleavage site position still requires refinement.
+      Thanks to the reduction of amino acid alphabet, signalHsmm is able to recognize signal peptides from the malaria parasites and their relatives more accurately than other software. Simultaneously, our software is still universal enough to provide prediction of other eukaryotic signal peptides on par with the best-performing predictors.
+      
+      \medskip
+      
+      Our model is able to extract decision rules from even very small datasets. Therefore, our model does not need to be permanently retrained with the continuous expansion of sequence databases. 
     \end{block}
     \vfill 
     
-        \begin{block}{Availability and funding}
-      signalHsmm web server: 
-      
-      \url{www.smorfland.uni.wroc.pl/signalhsmm}
-
         
-        This research was partially funded by the KNOW Consortium and National Science Center (2015/17/N/NZ2/01845).
-    \end{block}
-    \vfill 
      
      
     \begin{block}{Bibliography}

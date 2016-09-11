@@ -3,7 +3,7 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 
-size_mod <- 4
+size_mod <- 6
 
 my_theme <- theme(
   axis.text = element_text(size=13 + size_mod),
@@ -11,7 +11,8 @@ my_theme <- theme(
   axis.title.y = element_text(size=14 + size_mod, vjust = 1),
   
   legend.background = element_rect(fill = "NA"),
-  legend.key = element_rect(fill = "white", color = "NA", size = 0.5),
+  legend.key = element_rect(fill = "white", color = "NA"),
+  legend.key.size = unit(1.5, "lines"),
   legend.position = "bottom",
   #uncomment for publications
   #legend.key.size = unit(0.1, "inches"),
