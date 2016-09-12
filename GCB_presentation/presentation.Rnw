@@ -291,6 +291,47 @@ Subgroup ID & Amino acids \\
    
    \end{frame}
 
+     \begin{frame}{The best-perfoming reduced alphabet}
+   \begin{table}[ht]
+\centering
+\begin{tabular}{rl}
+  \toprule
+Subgroup ID & Amino acids \\ 
+  \midrule
+  1 & G \\ 
+   \rowcolor[gray]{0.85}  2 & K, P, R \\ 
+   \rowcolor{blue!20} 3 & I, L, V \\ 
+   \rowcolor{blue!20}  4 & F, W, Y \\ 
+    5 & A, C, H, M \\ 
+   \rowcolor[gray]{0.85}  6 & D, E, N, Q, S, T \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+   
+Group 3 and 4 - hydrophobic amino acids.  
+   \end{frame}
+  
+  
+     \begin{frame}{The best-perfoming reduced alphabet}
+   \begin{table}[ht]
+\centering
+\begin{tabular}{rl}
+  \toprule
+Subgroup ID & Amino acids \\ 
+  \midrule
+  1 & G \\ 
+   \rowcolor{red!20}  2 & K, P, R \\ 
+    3 & I, L, V \\ 
+   \rowcolor[gray]{0.85}  4 & F, W, Y \\ 
+    5 & A, C, H, M \\ 
+   \rowcolor[gray]{0.85}  6 & D, E, N, Q, S, T \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+   
+Group 2 - charged breakers of $\beta$-structures.  
+   
+   \end{frame}  
   
 %'     \begin{frame}{Cross-validation}
 %'   <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
@@ -358,14 +399,14 @@ levels(si_dat[["et"]]) <- c("Best-performing reduced alphabet",
                             "Standard reduced alphabet")
 
 
-ggplot(si_dat, aes(x=si, y=AUC_mean)) + 
+simil_plot <- ggplot(si_dat, aes(x=si, y=AUC_mean)) + 
   # geom_point(data = si_dat, 
   #            aes(x = si, y = AUC_mean, color = et, shape = et), size = 4) +
   #geom_density_2d(color = "black", contour = TRUE) +
     geom_bin2d(bins = 30) +
   # stat_density2d(aes(fill=..level..), color = "black",
   #                contour = TRUE, geom = "polygon", alpha = 0.5, binwidth = 50, bins = 10) +
-  scale_fill_continuous("Count", low = "#d4d4d4", high = "#5c5c5c") +
+  scale_fill_continuous("Count", low = "gold", high = "goldenrod4") +
   xlab("Similarity index") +
   ylab("AUC") +
   my_theme +
@@ -377,8 +418,18 @@ ggplot(si_dat, aes(x=si, y=AUC_mean)) +
   scale_color_manual("", values = c("red", "green", "blue"), drop = FALSE) +
   theme(panel.grid.major = element_line(color = "lightgrey", size = 0.5)) 
 
+print(simil_plot)
 @
 Similarity index~\citep{stephenson_unearthing_2013} measures the similarity between two reduced alphabets (1 - identical, 0, totally dissimilar).
+
+The color of a square is proportional to the number of reduced alphabets in its area.
+\end{frame}
+
+\begin{frame}{Similarity index}
+<<echo = FALSE,message=FALSE,fig.align='center',fig.width=14,fig.height=6.3,warning=FALSE>>=
+print(simil_plot)
+@
+The correlation between mean AUC an similarity index is significant ($\textrm{p-value} \leq 2.2^{-16}$; $\rho = 0.51$).
 \end{frame}
 
 \section{Knowledge-discovery}
@@ -458,12 +509,13 @@ n-gram analysis workflow is implemented in the R package \textbf{biogram}: \url{
 
 \end{frame}
 
-\begin{frame}{Contributors and funding}
+\begin{frame}{Acknowledgements and funding}
 
 This research was partially funded by the KNOW Consortium and National Science Center (2015/17/N/NZ2/01845).
 
 \small{
 \begin{itemize}
+\item Małgorzata Kotulska.
 \item Paweł Mackiewicz,
 \item Stefan R\"{o}diger,
 \item \textbf{biogram} software (\url{https://cran.r-project.org/package=biogram}):
@@ -477,7 +529,6 @@ This research was partially funded by the KNOW Consortium and National Science C
 \begin{itemize}
 \small
 \item Paweł Woźniak,
-\item Małgorzata Kotulska.
 \end{itemize}
 \end{itemize}
 }
