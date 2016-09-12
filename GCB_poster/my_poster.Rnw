@@ -102,13 +102,13 @@ load("signalhsmm_poster.RData")
 {
 \begin{block}{Introduction}
 
-The computational methods for the recognition of signal peptides accurately identify typical peptides, well-represented in protein databases~\cite{petersen_signalp_2011}. However, these algorithms are not general enough to predict more unique signal peptides, for example those present in proteins from parasites belonging to the phylum Apicomplexa. 
+The computational methods for the recognition of signal peptides accurately identify typical peptides, well-represented in protein databases~\citep{petersen_signalp_2011}. However, these algorithms are not general enough to predict more unique signal peptides, for example those present in proteins from parasites belonging to the phylum Apicomplexa. 
 
-Apicomplexans are characterized by a strongly AT-biased genomes and resulting from that the specific amino acid composition of coded proteins, which hinders their computational detection by general predictors. Nevertheless, members of Apicomplexa have a great medically significance, especially Plasmodium, a malaria agent. 
+Apicomplexans are characterized by a strongly AT-biased genomes and resulting from that the specific amino acid composition of coded proteins, which hinders their computational detection by general predictors. Nevertheless, members of Apicomplexa have a great medically significance, especially \textit{Plasmodium}, a malaria agent. 
 
     \end{block}
 
-\begin{block}{Training of AmyloGram}
+\begin{block}{Signal peptide architecture}
 \begin{figure}[ht]
         \centering
         \scalebox{1.22}{
@@ -133,13 +133,13 @@ Apicomplexans are characterized by a strongly AT-biased genomes and resulting fr
     \end{block}
     \vfill
 
-\begin{block}{Training  of the signalHsmm algorithm}
+\begin{block}{Training  of signalHsmm}
       \begin{enumerate}[1.]
-        \item Removal of atypical (non-standard amino acids, more than one cleavage site) or poorly annotated records from data set of proteins with signal peptide from UniProtKB 2014\_07 (after purification data set contains 3816 eukaryotic proteins with experimentally confirmed signal peptides and 9795 without signal peptide),
-        \item determination of n-, h-, c-regions by the heuristic algorithm,
-        \item reduction of dimensionality by aggregating amino acids to several physicochemical groups,
-        \item calculation of the amino acid group frequency in each region and the average length of the region,
-        \item training of two HSMM models for proteins with and without signal peptide.
+        \item Removal of atypical (non-standard amino acids, more than one cleavage site) or poorly annotated records from data set of proteins with signal peptide from UniProtKB 2014\_07 (after purification data set contains 3816 eukaryotic proteins with experimentally confirmed signal peptides and 9795 without signal peptide).
+        \item Determination of n-, h-, c-regions by the heuristic algorithm.
+        \item Reduction of dimensionality by aggregating amino acids to several physicochemical groups.
+        \item Calculation of the amino acid group frequency in each region and the average length of the region.
+        \item Training of two HSMM models for proteins with and without signal peptide.
       \end{enumerate} 
     \end{block}
     \vfill
@@ -174,6 +174,7 @@ Apicomplexans are characterized by a strongly AT-biased genomes and resulting fr
     \vfill   
 
     \begin{block}{Classification of amino acids used by signalHsmm}
+    \small
 \begin{table}[ht]
 \centering
 \begin{tabular}{ll}
@@ -199,6 +200,8 @@ Group & Amino acids \\
       signalHsmm web server: \url{www.smorfland.uni.wroc.pl/signalhsmm}
 
     This research was partially funded by the KNOW Consortium and National Science Center (2015/17/N/NZ2/01845).
+    
+    Find our poster online: \url{http://github.com/michbur/GCB2016}
     \end{block}
     \vfill 
 
