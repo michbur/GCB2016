@@ -74,7 +74,6 @@ names(best_enc) <- 1L:6
 
 @
   
-  
     Proteins associated with various neurodegenerative disorders (e.g., Alzheimer's, Parkinson's, Creutzfeldta-Jakob's diseases) creating harmful aggregates.
     
     \begin{figure} 
@@ -264,9 +263,7 @@ ggplot(subdat, aes(x = len_range, y = AUC_mean)) +
   coord_flip()
 @
   
-
-The best-performing reduced amino acid alphabet has the highest prediction rank in all test categories.
-  
+The reduced amino acid alphabets with the lowest sum of ranks from all sequence length categories (assuming the rank 1 for the best AUC, rank 2 for the second best AUC and so on) was selected as the best one.
   \end{frame}
 
      \begin{frame}{The best-perfoming reduced alphabet}
@@ -518,7 +515,7 @@ This research was partially funded by the KNOW Consortium and National Science C
 \item Małgorzata Kotulska.
 \item Paweł Mackiewicz,
 \item Stefan R\"{o}diger,
-\item \textbf{biogram} software (\url{https://cran.r-project.org/package=biogram}):
+\item \textbf{biogram} package (\url{https://cran.r-project.org/package=biogram}):
 \begin{itemize}
 \small
 \item Piotr Sobczyk,
@@ -542,4 +539,55 @@ This research was partially funded by the KNOW Consortium and National Science C
   \bibliographystyle{apalike}
   \bibliography{references}
 \end{frame}  
+
+\begin{frame}{Ranking alphabets}
+<<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+
+set.seed(3)
+exdat <- data.frame(
+  alph = paste0("A", 1L:5), 
+  c1 = 0.7 + runif(5)/5,
+  c2 = 0.75 + runif(5)/5,
+  c3 = 0.65 + runif(5)/5
+) %>% 
+  melt %>% 
+  group_by(variable) %>% 
+  mutate(r = rank(value)) %>% 
+  ungroup
+
+best_alph <- group_by(exdat, alph) %>%
+  summarise(cr = sum(r)) %>%
+  arrange(desc(cr)) %>% 
+  slice(1) %>% 
+  select(alph) %>% 
+  unlist %>% 
+  as.character
+
+exdat <- mutate(exdat, best = alph == best_alph)
+
+ggplot(exdat, aes(y = variable, x = value, color = alph)) +
+  geom_point(size = 7) +
+  scale_x_continuous("AUC") +
+  scale_y_discrete("Category", labels = paste0("Category ", 1L:3)) +
+  scale_color_discrete("Alphabet") +
+  my_theme
+
+@
+\end{frame}
+
+
+\begin{frame}{Ranking alphabets}
+<<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+ggplot(exdat, aes(y = variable, x = value, color = alph, shape = best)) +
+  geom_point(size = 7) +
+  scale_x_continuous("AUC") +
+  scale_y_discrete("Category", labels = paste0("Category ", 1L:3)) +
+  scale_color_discrete("Alphabet") +
+  scale_shape_discrete("Best reduced alphabet") +
+  my_theme
+
+
+@
+\end{frame}
+
 \end{document}
