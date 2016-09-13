@@ -244,6 +244,77 @@ confidence interval.
   
   \end{frame}
 
+\begin{frame}{Ranking alphabets}
+<<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+
+set.seed(3)
+exdat <- data.frame(
+  alph = paste0("A", 1L:5), 
+  c1 = 0.7 + runif(5)/5,
+  c2 = 0.75 + runif(5)/5,
+  c3 = 0.65 + runif(5)/5
+) %>% 
+  melt %>% 
+  group_by(variable) %>% 
+  mutate(r = rank(value)) %>% 
+  ungroup
+
+best_alph <- group_by(exdat, alph) %>%
+  summarise(cr = sum(r)) %>%
+  arrange(desc(cr)) %>% 
+  slice(1) %>% 
+  select(alph) %>% 
+  unlist %>% 
+  as.character
+
+exdat <- mutate(exdat, best = alph == best_alph)
+
+ggplot(exdat, aes(y = variable, x = value, color = alph)) +
+  geom_point(size = 7) +
+  scale_x_continuous("AUC") +
+  scale_y_discrete("Category", labels = paste0("Category ", 1L:3)) +
+  scale_color_discrete("Alphabet") +
+  my_theme
+
+@
+\end{frame}
+
+
+\begin{frame}{Ranking alphabets}
+<<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+ggplot(exdat, aes(y = variable, x = value, color = alph, label = (r - 6)*-1)) +
+  geom_text(size = 7) +
+  scale_x_continuous("AUC") +
+  scale_y_discrete("Category", labels = paste0("Category ", 1L:3)) +
+  scale_color_discrete("Alphabet") +
+  scale_shape_discrete("Best reduced alphabet") +
+  my_theme
+
+
+@
+We rank alphabets separately in all length categories assuming the rank 1 for the best AUC, rank 2 for the second best AUC and so on.
+
+
+\end{frame}
+
+
+
+\begin{frame}{Ranking alphabets}
+<<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
+ggplot(exdat, aes(y = variable, x = value, color = alph, shape = best)) +
+  geom_point(size = 7) +
+  scale_x_continuous("AUC") +
+  scale_y_discrete("Category", labels = paste0("Category ", 1L:3)) +
+  scale_color_discrete("Alphabet") +
+  scale_shape_discrete("Best reduced alphabet") +
+  my_theme
+
+
+@
+The best-performing alphabet has the lowest sum of ranks.  
+
+\end{frame}
+
   
     \begin{frame}{The best-perfoming reduced alphabet}
   <<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
@@ -262,8 +333,6 @@ ggplot(subdat, aes(x = len_range, y = AUC_mean)) +
   my_theme + 
   coord_flip()
 @
-  
-The reduced amino acid alphabets with the lowest sum of ranks from all sequence length categories (assuming the rank 1 for the best AUC, rank 2 for the second best AUC and so on) was selected as the best one.
   \end{frame}
 
      \begin{frame}{The best-perfoming reduced alphabet}
@@ -540,54 +609,5 @@ This research was partially funded by the KNOW Consortium and National Science C
   \bibliography{references}
 \end{frame}  
 
-\begin{frame}{Ranking alphabets}
-<<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
-
-set.seed(3)
-exdat <- data.frame(
-  alph = paste0("A", 1L:5), 
-  c1 = 0.7 + runif(5)/5,
-  c2 = 0.75 + runif(5)/5,
-  c3 = 0.65 + runif(5)/5
-) %>% 
-  melt %>% 
-  group_by(variable) %>% 
-  mutate(r = rank(value)) %>% 
-  ungroup
-
-best_alph <- group_by(exdat, alph) %>%
-  summarise(cr = sum(r)) %>%
-  arrange(desc(cr)) %>% 
-  slice(1) %>% 
-  select(alph) %>% 
-  unlist %>% 
-  as.character
-
-exdat <- mutate(exdat, best = alph == best_alph)
-
-ggplot(exdat, aes(y = variable, x = value, color = alph)) +
-  geom_point(size = 7) +
-  scale_x_continuous("AUC") +
-  scale_y_discrete("Category", labels = paste0("Category ", 1L:3)) +
-  scale_color_discrete("Alphabet") +
-  my_theme
-
-@
-\end{frame}
-
-
-\begin{frame}{Ranking alphabets}
-<<echo = FALSE, message=FALSE,warning=FALSE,fig.align='center',fig.width=14,fig.height=7>>=
-ggplot(exdat, aes(y = variable, x = value, color = alph, shape = best)) +
-  geom_point(size = 7) +
-  scale_x_continuous("AUC") +
-  scale_y_discrete("Category", labels = paste0("Category ", 1L:3)) +
-  scale_color_discrete("Alphabet") +
-  scale_shape_discrete("Best reduced alphabet") +
-  my_theme
-
-
-@
-\end{frame}
 
 \end{document}
